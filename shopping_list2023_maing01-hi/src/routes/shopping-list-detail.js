@@ -1,15 +1,16 @@
 //@@viewOn:imports
-import { createVisualComponent, Utils, Content } from "uu5g05";
+import { createVisualComponent, Utils } from "uu5g05";
 import Config from "./config/config.js";
+import RouteBar from "../core/route-bar";
+import ListDetail from "../bricks/shopping-list/listDetail";
+import TestShoppingList from "../bricks/shopping-list/testDataList"
+
 //@@viewOff:imports
 
 //@@viewOn:constants
 //@@viewOff:constants
 
 //@@viewOn:css
-const Css = {
-  main: () => Config.Css.css({}),
-};
 //@@viewOff:css
 
 //@@viewOn:helpers
@@ -31,20 +32,18 @@ const ShoppingListDetail = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
-    const { children } = props;
     //@@viewOff:private
 
     //@@viewOn:interface
     //@@viewOff:interface
 
     //@@viewOn:render
-    const attrs = Utils.VisualComponent.getAttrs(props, Css.main());
     const currentNestingLevel = Utils.NestingLevel.getNestingLevel(props, ShoppingListDetail);
 
     return currentNestingLevel ? (
-      <div {...attrs}>
-        <div>Visual Component {ShoppingListDetail.uu5Tag}</div>
-        <Content nestingLevel={currentNestingLevel}>{children}</Content>
+      <div>
+        <RouteBar />
+        <ListDetail shoppingList = {TestShoppingList} />
       </div>
     ) : null;
     //@@viewOff:render
