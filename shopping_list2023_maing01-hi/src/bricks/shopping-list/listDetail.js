@@ -2,8 +2,13 @@
 import { createVisualComponent} from "uu5g05";
 import React, {useState} from "react";
 import Config from "./config/config.js";
-import {Card, Button, Navbar, Nav, Container, Modal, Form} from "react-bootstrap";
+import {Card, Button, Navbar, Nav, Container} from "react-bootstrap";
 import "../css/listDetail.css";
+import EditItemModal from "./editItemModal";
+import EditListModal from "./editListModal";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons'
+
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -28,28 +33,24 @@ const ListDetail = createVisualComponent({
   defaultProps: {},
 
   render(props) {
+    const [list, setList] = useState(props.shoppingList);
+    const [items, setItems] = useState(props.shoppingList.items);
     const [sortBy, setSortBy] = useState('status');
     const [sortButton, setSortButton] = useState('Sort by name');
-    const [items, setItems] = useState(props.shoppingList.items);
-    const [isEditModalShown, setEditModalShow] = useState(false);
-    const [itemName, setItemName] = useState(''); //for editing name
-    const [itemId, setItemId] = useState(''); //for editing
-
-    const handleShowEditModal = (item) => {
-      setItemId(item.id);
-      setItemName(item.name);
-      setEditModalShow(true);
-    }
-    const handleCloseEditModal = () => setEditModalShow(false);
+    const [isEditItemModalShown, setEditItemModalShow] = useState(false);
+    const [isEditListModalShown, setEditListModalShown] = useState(false);
+    const [isCreateNewItemModalShown, setCreateNewItemModalShown] =useState(false);
+    const [editItemName, setEditItemName] = useState('');
+    const [editItemCount, setEditItemCount] = useState('');
+    const [editListName, setEditListName] = useState('');
+    const [newItemName, setNewItemName] = useState('');
+    const [newItemCount, setNewItemCount] = useState('');
 
     let sortedItems = [...items];
-
-
-
     const toggleSort = () => {
       if (sortBy === 'status') {
         setSortBy('name');
-        setSortButton('Unsort')
+        setSortButton('Unsorted')
       } else if (sortBy === "name") {
         setSortBy(null);
         setSortButton('Sort by status')
@@ -59,34 +60,80 @@ const ListDetail = createVisualComponent({
       }
     };
 
+    const handleEditItemClick = (item) => {
+      setEditItemName(item.name);
+      setEditItemCount(item.count);
+      setEditItemModalShow(true);
+    };
+    const handleEditListClick = (list) => {
+      setEditListName(list.name)
+      setEditListModalShown(true);
+    };
+    const handleCreateNewItemClick = () => {
+      setNewItemName('');
+      setNewItemCount('');
+      setCreateNewItemModalShown(true);
+    };
+
+    const handleEditItemSave = (newName, newCount) => {
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          ({...item, name: newName, count: newCount})));
+      setEditItemModalShow(false);
+    };
+
+    const handleCreateItemSave = (newName, newCount) => {
+      const newItem = {
+        id: generateUniqueId(),
+        name: newName,
+        count: newCount,
+        isDone: false // Устанавливайте начальное значение isDone по вашему усмотрению
+      };
+      setItems((prevItems) => [...prevItems, newItem]);
+      setCreateNewItemModalShown(false);
+    }
+
+    const handleEditListSave = (newName) => {
+      setList((prevList) => ({...prevList, name: newName}));
+      setEditListModalShown(false);
+    }
+
     const toggleEdit = (id) => {
       setItems((prevItems) =>
         prevItems.map((item) =>
           item.id === id ? { ...item, isDone: !item.isDone } : item));
     };
 
-    const handleItemNameChange = (e) => {
-      setItemName(e.target.value);
+    const handleEditItemNameChange = (e) => {
+      setEditItemName(e.target.value);
+    };
+    const handleEditItemCountChange = (e) => {
+      setEditItemCount(e.target.value);
+    };
+    const handleEditListNameChange = (e) => {
+      setEditListName(e.target.value);
+    }
+    const handleCreateItemNameChange = (e) => {
+      setNewItemName(e.target.value);
+    };
+    const handleCreateItemCountChange = (e) => {
+      setNewItemCount(e.target.value);
     };
 
-    const handleEditItem = () => {
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-        item.id === itemId ? {...item, name: itemName}: item));
-      handleCloseEditModal();
-    };
+
 
     const handleDelete = (id) => {
       setItems((prevItems) => prevItems.filter((item) => item.id !== id));
     };
-
     if (sortBy === "status") {
       sortedItems.sort((a, b) => a.isDone - b.isDone);
     } else if (sortBy === "name") {
       sortedItems.sort((a, b) => a.name.localeCompare(b.name));
     }
 
-
+    function generateUniqueId() {
+      return Date.now().toString(36) + Math.random().toString(36).substring(2);
+    }
 
     return (
       <div className="list-page">
@@ -95,11 +142,8 @@ const ListDetail = createVisualComponent({
           <Navbar.Collapse id="basic-navbar-nav">
             <Container>
               <Nav className="mr-auto">
-                <Button className="button-sort" onClick={toggleSort}>{sortButton}</Button>
-                <Button className="button-edit" size="sm">
-                  Edit
-                </Button>
-                <Button>Delete</Button>
+                <Button className="button-sort btn btn-info" variant="primary" style={{margin: "10px 0 0 10px"}} onClick={toggleSort}>{sortButton}</Button>
+                <Button className="button-sort btn btn-info" variant="primary" style={{margin: "10px 0 0 10px"}} onClick={() => handleEditListClick(list)}>Edit</Button>
               </Nav>
             </Container>
           </Navbar.Collapse>
@@ -109,11 +153,14 @@ const ListDetail = createVisualComponent({
           <div className="row main">
             <div className="col">
           <Card className="list-detail mx-auto" style={{ maxWidth: "700px", minWidth: "350px"}}>
-            <div className="row list-name">
-              <Card.Title className="col text-center">
-                <h2>{props.shoppingList.name}</h2>
+            <div className="list-name">
+              <Card.Title className="text-center">
+                <h2>{list.name}</h2>
               </Card.Title>
             </div>
+            <Button className="btn btn-info" onClick={handleCreateNewItemClick} style={{lineHeight: "1", padding: "2", fontSize: "14px", maxWidth: "90px", margin: "10px 10px 10px 5px"}}>
+              Add item
+            </Button>
             <Card.Text>
               {sortedItems.map((item) => (
                 <div className="row list-item" key={item.id}>
@@ -134,9 +181,8 @@ const ListDetail = createVisualComponent({
                 <div className="col">
                     {!item.isDone &&
                       <div className="row manageItem">
-                        <div className="col"><Button onClick={() => handleShowEditModal(item)}>Edit</Button></div>
-                        <div className="col"><Button className="btn btn-danger" onClick={() => handleDelete(item.id)}>Delete</Button>
-                        </div>
+                        <FontAwesomeIcon className="col" icon={faPenToSquare} onClick={() => handleEditItemClick(item)}/>
+                        <FontAwesomeIcon className="col" icon={faTrash} onClick={() => handleDelete(item.id)}/>
                       </div>
                     }
                 </div>
@@ -148,30 +194,31 @@ const ListDetail = createVisualComponent({
         </div>
         </div>
 
-        <Modal show={isEditModalShown} onHide={handleCloseEditModal}>
-          <Modal.Header editButton>
-            <Modal.Title>Change item</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-
-          </Modal.Body>
-          <Modal.Footer>
-            <Form>
-              <Form.Control
-                type="text"
-                style={{ maxWidth: '70%' }}
-                value={itemName}
-                onChange={handleItemNameChange}
-              />
-            </Form>
-            <Button variant="secondary" onClick={handleEditItem}>
-              Confirm
-            </Button>
-            <Button variant="danger" onClick={handleCloseEditModal}>
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <EditItemModal
+          title={"Edit item"} //edit item
+          show={isEditItemModalShown}
+          onHide={() => setEditItemModalShow(false)}
+          item={{name: editItemName, count: editItemCount }}
+          onNameChange={handleEditItemNameChange}
+          onCountChange={handleEditItemCountChange}
+          onSave={handleEditItemSave}
+        />
+        <EditItemModal //add new item
+          title={"Create item"}
+          show={isCreateNewItemModalShown}
+          onHide={() => setEditItemModalShow(false)}
+          item={{name: newItemName, count: newItemCount }}
+          onNameChange={handleCreateItemNameChange}
+          onCountChange={handleCreateItemCountChange}
+          onSave={handleCreateItemSave}
+        />
+        <EditListModal
+          show={isEditListModalShown}
+          onHide={() => setEditListModalShown(false)}
+          list={{ name: editListName }}
+          onNameChange={handleEditListNameChange}
+          onSave={handleEditListSave}
+          />
       </div>
     );
   }
