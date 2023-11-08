@@ -1,6 +1,8 @@
 const shoppingList = {
     id: "gtyvt5667",
     name: "My Shopping List",
+    memberList: [{ id: "m01", name: "Karel Omáčka" }],
+    owner: { id: "1983-3547-6643-0000", name: "Dmitrii Bogaciov" },
     items: [
       { id: "3hg23j4", name: "Milk", count: 2, isDone: false },
       { id: "n2b3j4h", name: "Bread", count: 1, isDone: true },

@@ -1,6 +1,7 @@
 //@@viewOn:imports
 import { createVisualComponent} from "uu5g05";
 import React, {useState} from "react";
+import Uu5Elements from "uu5g05-elements";
 import Config from "./config/config.js";
 import {Card, Button, Navbar, Nav, Container} from "react-bootstrap";
 import "../css/listDetail.css";
@@ -142,7 +143,8 @@ const ListDetail = createVisualComponent({
           <Navbar.Collapse id="basic-navbar-nav">
             <Container>
               <Nav className="mr-auto">
-                <Button className="button-sort btn btn-info" variant="primary" style={{margin: "10px 0 0 10px"}} onClick={toggleSort}>{sortButton}</Button>
+                <Button className="button-sort btn btn-info" variant="primary" style={{margin: "10px 0 0 10px"}}
+                        onClick={toggleSort}>{sortButton}</Button>
                 <Button className="button-sort btn btn-info" variant="primary" style={{margin: "10px 0 0 10px"}} onClick={() => handleEditListClick(list)}>Edit</Button>
               </Nav>
             </Container>
@@ -158,9 +160,18 @@ const ListDetail = createVisualComponent({
                 <h2>{list.name}</h2>
               </Card.Title>
             </div>
-            <Button className="btn btn-info" onClick={handleCreateNewItemClick} style={{lineHeight: "1", padding: "2", fontSize: "14px", maxWidth: "90px", margin: "10px 10px 10px 5px"}}>
-              Add item
-            </Button>
+            <Uu5Elements.Block
+              header={
+                <Button className="btn btn-info" onClick={handleCreateNewItemClick} style={{lineHeight: "1", padding: "2", fontSize: "14px", maxWidth: "90px", margin: "10px 10px 10px 5px"}}>
+                  Add item
+                </Button>
+              }
+              actionList={[
+                { icon: "uugdsstencil-user-account-key", children: list.owner.name},
+              ]}
+              headerSeparator={true}
+            >
+            </Uu5Elements.Block>
             <Card.Text>
               {sortedItems.map((item) => (
                 <div className="row list-item" key={item.id}>
@@ -206,7 +217,7 @@ const ListDetail = createVisualComponent({
         <EditItemModal //add new item
           title={"Create item"}
           show={isCreateNewItemModalShown}
-          onHide={() => setEditItemModalShow(false)}
+          onHide={() => setCreateNewItemModalShown(false)}
           item={{name: newItemName, count: newItemCount }}
           onNameChange={handleCreateItemNameChange}
           onCountChange={handleCreateItemCountChange}
