@@ -33,13 +33,14 @@ const ShoppingLists = createVisualComponent({
   defaultProps: {},
 
   render(props) {
-    const[filter, setFilter] = useState("notReady")
+    const[filter, setFilter] = useState("notReady");
+    const [shoppingLists, setShoppingLists] = useState(props.shoppingLists);
 
     const handleFilterChange = (newFilter) => {
       setFilter(newFilter);
     }
 
-    const filteredShoppingLists = props.shoppingLists.filter((list) => {
+    const filteredShoppingLists = shoppingLists.filter((list) => {
       if (filter === "all") {
         return true;
       } else if (filter === "ready") {
@@ -50,12 +51,26 @@ const ShoppingLists = createVisualComponent({
       return true;
     });
 
+    const handleCreateList = (listName) => {
+      const newShoppingList = {
+        id: Date.now().toString(),
+        name: listName,
+        memberList: [],
+        owner: identity,
+        items: [],
+        done: false
+      };
+
+      setShoppingLists((prevLists) => [...prevLists, newShoppingList]);
+      console.log(shoppingLists);
+    };
+
     const {identity} = useSession();
 
     return (
       <div>
         <Navbar style={{backgroundColor: "#6495ED", marginBottom:"10px"}}>
-          <ListCreate lists={props.shoppingLists}/>
+          <ListCreate onCreateList={handleCreateList} />
           <Dropdown as={ButtonGroup} style={{marginLeft:"10px"}}>
             <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
               Filter

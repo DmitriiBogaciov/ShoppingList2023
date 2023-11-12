@@ -31,10 +31,21 @@ const ListCreate = createVisualComponent({
       setListName(e.target.value);
     }
 
+    const handleCreateList = (e) => {
+      e.preventDefault();
+
+      if (listName.trim() !== "") {
+        props.onCreateList(listName);
+        setListName('');
+      }
+
+      handleCloseModal();
+    };
+
     return (
       <div>
         <Modal show={isModalShown} onHide={handleCloseModal}>
-          <Form className="mx-auto">
+          <Form className="mx-auto" onSubmit={handleCreateList}>
             <Modal.Header closeButton>
               <Modal.Title>Create list</Modal.Title>
             </Modal.Header>
