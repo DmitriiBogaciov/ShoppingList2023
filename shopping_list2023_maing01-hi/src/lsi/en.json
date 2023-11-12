@@ -32,6 +32,7 @@
   "Menu": {
     "home": "Welcome",
     "about": "About Application",
-    "ShoppingListDetail": "ShoppingList"
+    "ShoppingListDetail": "ShoppingList",
+    "ShoppingLists": "ShoppingLists"
   }
 }

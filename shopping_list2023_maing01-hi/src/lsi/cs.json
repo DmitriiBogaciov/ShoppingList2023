@@ -32,6 +32,7 @@
   "Menu": {
     "home": "Vítejte",
     "about": "O aplikaci",
-    "ShoppingListDetail": "ShoppingList"
+    "ShoppingListDetail": "ShoppingList",
+    "ShoppingLists": "ShoppingLists"
   }
 }

@@ -14,6 +14,7 @@ const shoppingList = {
       { id: "fdvvr35", name: "Banana", count: 5, isDone: true },
       { id: "sdfbtrb", name: "Pineapple", count: 1, isDone: false },
   ],
+  done: false
 }
 
 export default shoppingList;
