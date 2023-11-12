@@ -1,0 +1,79 @@
+{
+  "{asid}": {
+    "profileList": ["AsidAuthorities", "AsidExecutives", "AsidLicenseOwner", "Public"],
+    "useCaseMap": {
+    }
+  },
+  "*": {
+    "profileList": ["Authorities", "Owner", "User", "Member", "Executives", "AwidLicenseOwner", "Public", "Authenticated", "AwidInitiator"],
+    "useCaseMap": {
+      "sys/uuAppWorkspace/init": {
+        "sysStateList": ["created", "assigned"],
+        "profileList": ["AwidLicenseOwner", "AwidInitiator"]
+      },
+      "sys/uuAppWorkspace/load": {
+        "sysStateList": ["active"],
+        "profileList": ["Authenticated"]
+      },
+      "sys/uuAppWorkspace/loadBasicData": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "defaultUve": {
+        "profileList": ["Public"]
+      },
+      "sys/uuAppWorkspace/initUve": {
+        "sysStateList": ["created"],
+        "profileList": ["Public", "AwidLicenseOwner"]
+      },
+      "helloWorld": {
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "shoppingList/create": {
+        "sysStateList": ["active"],
+        "profileList": ["User", "Public"]
+      },
+      "shoppingList/delete": {
+        "sysStateList": ["active"],
+        "profileList": ["Owner"]
+      },
+      "shoppingList/list": {
+        "sysStateList": ["active"],
+        "profileList": ["User"]
+      },
+      "shoppingList/get": {
+        "sysStateList": ["active"],
+        "profileList": ["Owner", "Member"]
+      },
+      "shoppingList/update": {
+        "sysStateList": ["active"],
+        "profileList": ["Owner", "Member"]
+      },
+      "shoppingList/addMember": {
+        "sysStateList": ["active"],
+        "profileList": ["Owner", "Member"]
+      },
+      "shoppingList/addItem": {
+        "sysStateList": ["active"],
+        "profileList": ["Owner", "Member"]
+      },
+      "shoppingList/deleteItem": {
+        "sysStateList": ["active"],
+        "profileList": ["Owner", "Member"]
+      },
+      "shoppingList/markAsDone": {
+        "sysStateList": ["active"],
+        "profileList": ["Owner", "Member"]
+      },
+      "shoppingList/markItemAsDone": {
+        "sysStateList": ["active"],
+        "profileList": ["Owner", "Member"]
+      },
+      "shoppingList/updateItem": {
+        "sysStateList": ["active"],
+        "profileList": ["Owner", "Member"]
+      }
+    }
+  }
+}
