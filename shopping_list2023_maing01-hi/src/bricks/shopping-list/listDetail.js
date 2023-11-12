@@ -47,6 +47,7 @@ const ListDetail = createVisualComponent({
     const [newItemName, setNewItemName] = useState('');
     const [newItemCount, setNewItemCount] = useState('');
 
+
     let sortedItems = [...items];
     const toggleSort = () => {
       if (sortBy === 'status') {

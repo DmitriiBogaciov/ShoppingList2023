@@ -36,12 +36,6 @@ const ShoppingListDetail = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
-    const { data } = props;
-
-    const [modalOpen, setModalOpen] = useState(false);
-
-    const { identity } = useSession();
-    const isOwner = identity?.uuIdentity === data.owner.id;
     //@@viewOff:private
 
     //@@viewOn:interface
@@ -53,23 +47,7 @@ const ShoppingListDetail = createVisualComponent({
     return currentNestingLevel ? (
       <div>
         <RouteBar />
-        <Uu5Elements.Block
-          // header={
-          //   // <Uu5Elements.Text category="interface" segment="title" type="common">
-          //   //   {isOwner
-          //   //     ? ({ style }) => (
-          //   //       <TextInput className={Config.Css.css(style)} id={"header"} value={name} onChange={setName} />
-          //   //     )
-          //   //     : name}
-          //   // </Uu5Elements.Text>
-          // }
-          // actionList={[
-          //   { icon: "uugdsstencil-user-account-key", children: data.owner.name, onClick: () => setModalOpen(true) },
-          // ]}
-          // headerSeparator={true}
-        >
-          <ListDetail shoppingList = {data} />
-        </Uu5Elements.Block>
+        <ListDetail shoppingList = {data} />
       </div>
     ) : null;
     //@@viewOff:render
