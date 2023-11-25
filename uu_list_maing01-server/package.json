@@ -22,6 +22,7 @@
     "package": "uu_appg01_devkit package",
     "deploy": "uu_appg01_devkit deploy",
     "undeploy": "uu_appg01_devkit undeploy",
+    "debug": "uu_appg01_devkit start --inspect",
     "start": "uu_appg01_devkit start",
     "prettify": "uu_appg01_devkit prettify",
     "vulnerabilityScan": "uu_appg01_devkit vulnerabilityScan",

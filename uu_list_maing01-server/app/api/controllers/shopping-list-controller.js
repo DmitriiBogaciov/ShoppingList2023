@@ -1,130 +1,96 @@
-"use strict";
+// "use strict";
+// const CreateAbl = require("../../abl/ShoppingList/create-abl");
+// const ListAbl = require("../../abl/ShoppingList/list-abl");
+// const GetAbl = require("../../abl/ShoppingList/get-abl");
 
-class ShoppingListController {
-  create(ucEnv) {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+// class ShoppingListController {
+//   create(ucEnv) {
+//       return CreateAbl.create(ucEnv.getUri().getAwid(), ucEnv.parameters, ucEnv.getAuthorizationResult());
+//     };
+//   }
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
-  delete() {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+  // remove(ucEnv) {
+  //   let dtoIn = ucEnv.getDtoIn();
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
-  list() {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+  //   return {
+  //     shoppingList: dtoIn.shoppingList,
+  //     uuAppErrorMap: {}
+  //   };
+  // }
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
-  get() {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+  // list(ucEnv) {
+  //   return ListAbl.list(ucEnv.getUri().getAwid(), ucEnv.parameters, ucEnv.getAuthorizationResult());
+  // }
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
-  update() {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+  // get(ucEnv) {
+  //   let dtoIn = ucEnv.getDtoIn();
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
-  addMember() {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+  //   return {
+  //     shoppingList: dtoIn.shoppingList,
+  //     uuAppErrorMap: {}
+  //   };
+  // }
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
-  addItem() {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+  // update(ucEnv) {
+  //   let dtoIn = ucEnv.getDtoIn();
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
-  deleteItem() {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+  //   return {
+  //     shoppingList: dtoIn.shoppingList,
+  //     uuAppErrorMap: {}
+  //   };
+  // }
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
-  markAsDone() {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+  // addMember(ucEnv) {
+  //   let dtoIn = ucEnv.getDtoIn();
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
-  updateItem() {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+  //   return {
+  //     shoppingList: dtoIn.shoppingList,
+  //     uuAppErrorMap: {}
+  //   };
+  // }
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
-  markItemAsDone() {
-    let dtoIn = ucEnv.getDtoIn();
-    let awid = ucEnv.getUri().getAwid();
-    let session = ucEnv.getSession()
+  // addItem(ucEnv) {
+  //   let dtoIn = ucEnv.getDtoIn();
 
-    return {
-      awid,
-      shoppingList: dtoIn.shoppingList,
-      uuAppErrorMap: {}
-    };
-  }
+  //   return {
+  //     shoppingList: dtoIn.shoppingList,
+  //     uuAppErrorMap: {}
+  //   };
+  // }
 
+  // deleteItem(ucEnv) {
+  //   let dtoIn = ucEnv.getDtoIn();
+  //   return {
+  //     shoppingList: dtoIn.shoppingList,
+  //     uuAppErrorMap: {}
+  //   };
+  // }
 
+  // markAsDone(ucEnv) {
+  //   let dtoIn = ucEnv.getDtoIn();
 
-}
+  //   return {
+  //     shoppingList: dtoIn.shoppingList,
+  //     uuAppErrorMap: {}
+  //   };
+  // }
+
+  // updateItem(ucEnv) {
+  //   let dtoIn = ucEnv.getDtoIn();
+
+  //   return {
+  //     shoppingList: dtoIn.shoppingList,
+  //     uuAppErrorMap: {}
+  //   };
+  // }
+
+  // markItemAsDone(ucEnv) {
+  //   let dtoIn = ucEnv.getDtoIn()
+
+  //   return {
+  //     shoppingList: dtoIn.shoppingList,
+  //     uuAppErrorMap: {}
+  //   };
+  // }
 
 module.exports = new ShoppingListController();

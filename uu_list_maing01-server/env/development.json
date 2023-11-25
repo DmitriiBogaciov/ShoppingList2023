@@ -1,7 +1,7 @@
 {
   "port": 8080,
   "uuSubAppDataStoreMap": {
-    "primary": "mongodb://127.0.0.1:27017/listMainPrimary"
+    "primary": "mongodb+srv://dmitriibogaciov:shoppinglist@shoppinglist.dnz8kio.mongodb.net/?retryWrites=true&w=majority"
   },
   "asid_license_owner_list": ["1983-3547-6643-0000"],
   "asid": "11111111111111111111111111111111",
