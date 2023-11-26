@@ -102,7 +102,7 @@ class ShoppingListAbl {
       validationResult,
       uuAppErrorMap,
       Warnings.Update.UnsupportedKeys.code,
-      Errors.Update.InvalidDtoIn
+      Errors.Update.invalidDtoIn
     );
     let existingList;
     try {
@@ -140,6 +140,44 @@ class ShoppingListAbl {
 
     return dtoOut;
   }
+
+  async remove(awid, dtoIn, session, authorizationResult) {
+    let uuAppErrorMap = {};
+
+    const validationResult = this.validator.validate("shoppingListRemoveDtoInType", dtoIn);
+
+    uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      uuAppErrorMap,
+      Warnings.Remove.UnsupportedKeys.code,
+      Errors.Remove.invalidDtoIn
+    );
+
+    let existingList;
+    try {
+      existingList = await this.dao.get(awid, dtoIn.id);
+    } catch (e) {
+      throw new Error("Error calling dao.get: " + e.message);
+    }
+  
+    if (!existingList) {
+      throw new Errors.List.ShoppingListDoesNotExist(uuAppErrorMap, { id: dtoIn.id });
+    }
+
+    const uuIdentity = session.getIdentity().getUuIdentity();
+    const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
+    if (uuIdentity !== existingList.owner && !isAuthorities) {
+      throw new Errors.Remove.UserNotAuthorized({ uuAppErrorMap });
+    }
+
+    await this.dao.remove(awid, dtoIn.id);
+
+    return {
+      message: "Shopping list successfully removed.",
+      uuAppErrorMap
+    };
+  }  
 }
 
 module.exports = new ShoppingListAbl();

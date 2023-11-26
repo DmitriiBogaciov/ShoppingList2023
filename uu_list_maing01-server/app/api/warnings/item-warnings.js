@@ -1,4 +1,4 @@
-const Errors = require("../errors/shopping-list-error");
+const Errors = require("../errors/item-error.js");
 
 const Warnings = {
   List: {

@@ -17,6 +17,18 @@ const Constants = {
         },
     },
 
+    Item: {
+        States: {
+            INIT: "init",
+            ACTIVE: "active",
+            UNDER_CONSTRUCTION: "underConstruction",
+            CLOSED: "closed",
+        },
+        get NonFinalStates() {
+          return new Set([this.States.ACTIVE, this.States.UNDER_CONSTRUCTION]);
+        },
+    },
+
     Profiles: {
         AUTHORITIES: "Authorities",
         EXECUTIVES: "Executives",

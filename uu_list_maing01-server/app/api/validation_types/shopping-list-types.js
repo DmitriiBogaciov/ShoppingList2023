@@ -1,14 +1,14 @@
 const shoppingListCreateDtoInType = shape({
   name: string().isRequired(),
-})
+});
 
 const shoppingListRemoveDtoInType = shape({
   id: string().isRequired()
-})
+});
 
 const shoppingListListDtoInType = shape({
   //
-})
+});
 
 const shoppingListGetDtoInType = shape({
   id: string().isRequired(),

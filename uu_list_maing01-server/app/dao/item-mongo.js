@@ -1,7 +1,7 @@
 "use strict";
 const { UuObjectDao } = require("uu_appg01_server").ObjectStore;
 
-class ShoppingListMongo extends UuObjectDao {
+class ItemMongo extends UuObjectDao {
   // constructor(...args) {
   //   super(...args);
   // }
@@ -11,8 +11,8 @@ class ShoppingListMongo extends UuObjectDao {
     await super.createIndex({ awid: 1, name: 1 });
   }
 
-  async create(list) {
-    return await super.insertOne(list);
+  async create(item) {
+    return await super.insertOne(item);
   }
 
   async list(awid) {
@@ -35,4 +35,4 @@ class ShoppingListMongo extends UuObjectDao {
   }
 }
 
-module.exports = ShoppingListMongo;
+module.exports = ItemMongo;

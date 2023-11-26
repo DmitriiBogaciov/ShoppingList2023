@@ -1,0 +1,47 @@
+"use strict";
+const { Validator } = require("uu_appg01_server").Validation;
+const { DaoFactory, ObjectStoreError } = require("uu_appg01_server").ObjectStore;
+const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const Errors = require("../api/errors/item-error");
+const Warnings = require("../api/warnings/item-warnings.js");
+const { Schemas, Profiles } = require("./constants");
+
+class ItemAbl {
+    constructor() {
+        this.validator = Validator.load();
+        this.dao = DaoFactory.getDao(Schemas.ITEM)
+      }
+
+      async create(awid, dtoIn) {
+
+        const addedValues = {
+            awid: awid,
+            done: false
+          }
+
+        let uuAppErrorMap = {};
+        let validationResult = this.validator.validate("itemCreateDtoInType", dtoIn);
+        uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult, uuAppErrorMap, Warnings.Create.UnsupportedKeys.code, Errors.Create.invalidDtoIn);
+        
+        let dtoOut;
+        const uuObject = {
+          ...dtoIn,
+          ...addedValues,
+        };
+        try {
+            dtoOut = await this.dao.create(uuObject);
+        } catch (e) {
+            if (e instanceof ObjectStoreError) {
+                throw new Errors.Create.ItemDaoCreateFaild({ uuAppErrorMap }, e)
+            }
+    
+            throw e;
+        }
+    
+        dtoOut.uuAppErrorMap = uuAppErrorMap;
+    
+        return dtoOut;
+      }
+}
+
+module.exports = new ItemAbl();

@@ -9,6 +9,9 @@
         },
         "shoppingList": {
           "realization": "dao/ShoppingListMongo"
+        },
+        "item": {
+          "realization": "dao/ItemMongo"
         }
       }
     }

@@ -3,7 +3,7 @@
 const ListMainUseCaseError = require("./list-main-use-case-error");
 
 const Create = {
-    UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/shopping-list/create`,
+    UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/item/create`,
     invalidDtoIn: class extends ListMainUseCaseError {
         constructor() {
             super(...arguments);
@@ -12,17 +12,17 @@ const Create = {
         }
     },
 
-    ShoppingListDaoCreateFaild: class extends ListMainUseCaseError {
+    ItemDaoCreateFaild: class extends ListMainUseCaseError {
         constructor() {
             super(...arguments);
-            this.code = `${Create.UC_CODE}/shoppingListDaoCreateFaild`;
-            this.message = `Create list by list Dao created failed`
+            this.code = `${Create.UC_CODE}/ItemDaoCreateFaild`;
+            this.message = `Create imet by item Dao created failed`
         }
     }
 }
 
 const List = {
-    UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/shopping-list/list`,
+    UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/item/list`,
     invalidDtoIn: class extends ListMainUseCaseError {
       constructor() {
         super(...arguments);
@@ -30,24 +30,24 @@ const List = {
         this.message = "DtoIn is not valid.";
       }
     },
-    ShoppingListDoesNotExist: class extends ListMainUseCaseError {
+    ItemDoesNotExist: class extends ListMainUseCaseError {
       constructor() {
         super(...arguments);
-        this.code = `${List.UC_CODE}ShoppingListDoesNotExist`;
-        this.message = "UuObject ShoppingList does not exist.";
+        this.code = `${List.UC_CODE}ItemDoesNotExist`;
+        this.message = "UuObject Item does not exist.";
       }
     },
-    ShoppingListNotInCorrectState: class extends ListMainUseCaseError {
+    ItemNotInCorrectState: class extends ListMainUseCaseError {
       constructor() {
         super(...arguments);
-        this.code = `${List.UC_CODE}ShoppingListNotInCorrectState`;
-        this.message = "UuObject ShoppingList is not in correct state.";
+        this.code = `${List.UC_CODE}ItemNotInCorrectState`;
+        this.message = "UuObject Item is not in correct state.";
       }
     },
   };
 
 const Get = {
-  UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/shopping-list/get`,
+  UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/item/get`,
   invalidDtoIn: class extends ListMainUseCaseError {
       constructor() {
         super(...arguments);
@@ -56,17 +56,17 @@ const Get = {
       }
     },
 
-    ShoppingListDoesNotExist: class extends ListMainUseCaseError {
+    ItemDoesNotExist: class extends ListMainUseCaseError {
       constructor() {
         super(...arguments);
-        this.code = `${List.UC_CODE}ShoppingListDoesNotExist`;
-        this.message = "UuObject ShoppingList does not exist.";
+        this.code = `${List.UC_CODE}ItemDoesNotExist`;
+        this.message = "UuObject Item does not exist.";
       }
     },
 }
 
 const Update = {
-  UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/shopping-list/update`,
+  UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/item/update`,
   invalidDtoIn: class extends ListMainUseCaseError {
     constructor() {
       super(...arguments);
@@ -75,17 +75,17 @@ const Update = {
     }
   },
 
-  ShoppingListDaoUpdateFailed: class extends ListMainUseCaseError {
+  ItemDaoUpdateFailed: class extends ListMainUseCaseError {
      constructor() {
       super(...arguments);
-      this.code = `${List.UC_CODE}ShoppingListDaoUpdateFailed`;
-      this.message = "UuObject ShoppingList update failed.";
+      this.code = `${List.UC_CODE}ItemDaoUpdateFailed`;
+      this.message = "UuObject Item update failed.";
     }
   }, 
 }
 
 const Remove = {
-  UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/shopping-list/remove`,
+  UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/item/remove`,
   invalidDtoIn: class extends ListMainUseCaseError {
     constructor() {
       super(...arguments);
@@ -93,11 +93,11 @@ const Remove = {
       this.message = "DtoIn is not valid.";
     }
   },
-  ShoppingListDoesNotExist: class extends ListMainUseCaseError {
+  ItemDoesNotExist: class extends ListMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${List.UC_CODE}ShoppingListDoesNotExist`;
-      this.message = "UuObject ShoppingList does not exist.";
+      this.code = `${List.UC_CODE}ItemDoesNotExist`;
+      this.message = "UuObject Item does not exist.";
     }
   },
   UserNotAuthorized: class extends ListMainUseCaseError {

@@ -50,23 +50,23 @@
         "sysStateList": ["active"],
         "profileList": ["User", "Authenticated", "Executives"]
       },
-      "shoppingList/addItem": {
+      "item/create": {
         "sysStateList": ["active"],
         "profileList": ["User", "Authenticated", "Executives"]
       },
-      "shoppingList/deleteItem": {
+      "item/list": {
         "sysStateList": ["active"],
         "profileList": ["User", "Authenticated", "Executives"]
       },
-      "shoppingList/markAsDone": {
+      "item/get": {
         "sysStateList": ["active"],
         "profileList": ["User", "Authenticated", "Executives"]
       },
-      "shoppingList/markItemAsDone": {
+      "item/update": {
         "sysStateList": ["active"],
         "profileList": ["User", "Authenticated", "Executives"]
       },
-      "shoppingList/updateItem": {
+      "item/remove": {
         "sysStateList": ["active"],
         "profileList": ["User", "Authenticated"]
       }

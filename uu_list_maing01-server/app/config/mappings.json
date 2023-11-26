@@ -32,6 +32,37 @@
           "id": "$.id"
         }
       },
+      "item/create": {
+        "realization": "api/controllers/ItemController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "item/list": {
+        "realization": "api/controllers/ItemController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "item/get": {
+        "realization": "api/controllers/ItemController.get",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "item/update": {
+        "realization": "api/controllers/ItemController.update",
+        "httpMethod": "PUT",
+        "type": "CMD",
+        "dtoInAuditMap": {
+          "id": "$.id"
+        }
+      },
+      "item/remove": {
+        "realization": "api/controllers/ItemController.remove",
+        "httpMethod": "POST",
+        "type": "CMD",
+        "dtoInAuditMap": {
+          "id": "$.id"
+        }
+      },
       "helloWorld": {
         "realization": "api/controllers/ListController.helloWorld",
         "httpMethod": "GET",
