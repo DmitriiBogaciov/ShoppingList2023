@@ -11,6 +11,11 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
+      "shoppingList/listForUser": {
+        "realization": "api/controllers/ShoppingListController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
       "shoppingList/get": {
         "realization": "api/controllers/ShoppingListController.get",
         "httpMethod": "GET",
@@ -39,6 +44,11 @@
       },
       "item/list": {
         "realization": "api/controllers/ItemController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "item/listByIds": {
+        "realization": "api/controllers/ItemController.listByIds",
         "httpMethod": "GET",
         "type": "CMD"
       },

@@ -8,7 +8,7 @@ class ShoppingListController {
 
   list(ucEnv) {
     return ShoppingListAbl.list(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getAuthorizationResult());
-    };
+  };
 
   get(ucEnv) {
     return ShoppingListAbl.get(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getAuthorizationResult());
@@ -21,6 +21,10 @@ class ShoppingListController {
   remove(ucEnv) {
     return ShoppingListAbl.remove(ucEnv.getUri().getAwid(), ucEnv.parameters, ucEnv.session, ucEnv.getAuthorizationResult());
   }
+
+  listForUser(ucEnv) {
+    return ShoppingListAbl.listForUser(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getSession().getIdentity());
+  };
 }
   
 

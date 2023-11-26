@@ -19,6 +19,11 @@ const shoppingListUpdateDtoInType = shape({
   name: string(),
   members: array(),
   items: array(),
+  done: boolean()
+});
+
+const shoppingListListForUserDtoInType = shape({
+  //
 });
 
 // const listGetDtoInType = shape({

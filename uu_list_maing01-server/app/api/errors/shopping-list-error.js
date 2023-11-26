@@ -109,6 +109,17 @@ const Remove = {
   },
 }
 
+const ListForUser = {
+  UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/shopping-list/listForUser`,
+  invalidDtoIn: class extends ListMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+}
+
 module.exports = {
     Create,
     List,

@@ -3,14 +3,25 @@ const itemCreateDtoInType = shape({
     count: number()
 });
 
-const shoppingListRemoveDtoInType = shape({
+const itemRemoveDtoInType = shape({
 id: string().isRequired()
 });
   
-const shoppingListListDtoInType = shape({
+const itemListDtoInType = shape({
  //
 });
+
+const itemListByIdsDtoInType = shape({
+    idList: array()
+});
   
-const shoppingListGetDtoInType = shape({
+const itemGetDtoInType = shape({
 id: string().isRequired(),
+});
+
+const itemUpdateDtoInType = shape({
+    id: string().isRequired(),
+    name: string(),
+    count: number(),
+    done: boolean()
 });

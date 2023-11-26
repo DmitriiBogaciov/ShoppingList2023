@@ -18,7 +18,8 @@ class ShoppingListAbl {
            owner: identity.getUuIdentity(),
            awid: awid,
            members: [],
-           items: []
+           items: [],
+           done: false
          }
 
     let uuAppErrorMap = {};
@@ -49,7 +50,7 @@ class ShoppingListAbl {
     let uuAppErrorMap = {};
 
     let validationResult = this.validator.validate("shoppingListListDtoInType", dtoIn);
-    uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult, uuAppErrorMap, Errors.List.InvalidDtoIn);
+    uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult, uuAppErrorMap, Warnings.List.UnsupportedKeys.code, Errors.List.invalidDtoIn);
 
     let list;
     try {
@@ -66,11 +67,29 @@ class ShoppingListAbl {
     return dtoOut;
   }
 
+  async listForUser(awid, dtoIn, identity) {
+    let uuAppErrorMap = {};
+
+    let validationResult = this.validator.validate("shoppingListListForUserDtoInType", dtoIn);
+    uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult, uuAppErrorMap, Warnings.ListForUser.UnsupportedKeys.code, Errors.ListForUser.invalidDtoIn);
+
+    try {
+      const lists = await this.dao.listForUser(awid, identity.getUuIdentity());
+      const dtoOut = {
+        lists,
+        uuAppErrorMap,
+      };
+      return dtoOut;
+    } catch (e) {
+      throw new Error("Error calling dao.listForUser: " + e.message);
+    }
+  }
+
   async get(awid, dtoIn, authorizationResult) {
     let uuAppErrorMap = {};
 
     let validationResult = this.validator.validate("shoppingListGetDtoInType", dtoIn);
-    uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult, uuAppErrorMap, Errors.Get.InvalidDtoIn);
+    uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult, uuAppErrorMap, Errors.Get.invalidDtoIn);
 
     let shoppingList;
     try {
@@ -93,8 +112,6 @@ class ShoppingListAbl {
 
   async update(awid, dtoIn, identity, authorizationResult) {
     let uuAppErrorMap = {};
-
-    console.log(`DATA TO UPDATE`, dtoIn);
 
     let validationResult = this.validator.validate("shoppingListUpdateDtoInType", dtoIn);
     uuAppErrorMap = ValidationHelper.processValidationResult(
@@ -122,8 +139,7 @@ class ShoppingListAbl {
     }
   
     const updatedList = {
-      ...dtoIn,
-      revision: existingList.sys.rev + 1, // Увеличиваем ревизию на 1
+      ...dtoIn
     };
     updatedList.awid = awid;
     let newList;
@@ -136,7 +152,7 @@ class ShoppingListAbl {
       throw e;
     }
     
-    const dtoOut = { ...newList, uuAppErrorMap, name: updatedList.name };
+    const dtoOut = { ...newList, uuAppErrorMap};
 
     return dtoOut;
   }

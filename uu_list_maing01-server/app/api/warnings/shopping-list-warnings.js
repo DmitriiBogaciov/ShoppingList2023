@@ -21,6 +21,11 @@ const Warnings = {
       code: `${Errors.Remove.UC_CODE}unsupportedKeys`,
     },
   },
+  ListForUser: {
+    UnsupportedKeys: {
+      code: `${Errors.Remove.UC_CODE}unsupportedKeys`,
+    },
+  }
 };
 
 module.exports = Warnings;

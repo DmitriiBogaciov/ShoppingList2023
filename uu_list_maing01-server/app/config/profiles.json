@@ -42,6 +42,10 @@
         "sysStateList": ["active"],
         "profileList": ["User", "Authenticated", "Executives"]
       },
+      "shoppingList/listForUser": {
+        "sysStateList": ["active"],
+        "profileList": ["User", "Authenticated", "Executives"]
+      },
       "shoppingList/get": {
         "sysStateList": ["active"],
         "profileList": ["User", "Authenticated", "Executives"]
@@ -55,6 +59,10 @@
         "profileList": ["User", "Authenticated", "Executives"]
       },
       "item/list": {
+        "sysStateList": ["active"],
+        "profileList": ["User", "Authenticated", "Executives"]
+      },
+      "item/listByIds": {
         "sysStateList": ["active"],
         "profileList": ["User", "Authenticated", "Executives"]
       },

@@ -10,9 +10,9 @@ class ItemAbl {
     constructor() {
         this.validator = Validator.load();
         this.dao = DaoFactory.getDao(Schemas.ITEM)
-      }
+    }
 
-      async create(awid, dtoIn) {
+    async create(awid, dtoIn) {
 
         const addedValues = {
             awid: awid,
@@ -41,7 +41,150 @@ class ItemAbl {
         dtoOut.uuAppErrorMap = uuAppErrorMap;
     
         return dtoOut;
+    }
+
+    async list(awid, dtoIn, authorizationResult) {
+        let uuAppErrorMap = {};
+    
+        let validationResult = this.validator.validate("itemListDtoInType", dtoIn);
+        uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult, uuAppErrorMap, Warnings.List.UnsupportedKeys.code,  Errors.List.invalidDtoIn);
+    
+        let item;
+        try {
+          item = await this.dao.list(awid);
+        } catch (e) {
+          throw new Error("Error calling dao.list: " + e.message);
+        }
+      
+        const dtoOut = {
+          ...item,
+          uuAppErrorMap,
+        };
+    
+        return dtoOut;
+    }
+
+    async listByIds(awid, dtoIn) {
+      let uuAppErrorMap = {};
+  
+      let validationResult = this.validator.validate("itemListByIdsDtoInType", dtoIn);
+      uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult, uuAppErrorMap, Warnings.ListByIds.UnsupportedKeys.code,  Errors.ListByIds.invalidDtoIn);
+  
+      try {
+        const items = await this.dao.listByIds(awid, dtoIn.idList);
+ 
+        return {
+          items,
+          uuAppErrorMap,
+        };
+      } catch (e) {
+        throw new Error("Error calling dao.listByIds: " + e.message);
       }
+  }
+
+    async get(awid, dtoIn, authorizationResult) {
+        let uuAppErrorMap = {};
+    
+        let validationResult = this.validator.validate("itemGetDtoInType", dtoIn);
+        uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult, uuAppErrorMap, Errors.Get.invalidDtoIn);
+    
+        let item;
+        try {
+            item = await this.dao.get(awid, dtoIn.id);
+        } catch (e) {
+          throw new Error("Error calling dao.get: " + e.message);
+        }
+    
+        if (!item) {
+          throw new Errors.Get.ItemDoesNotExist(uuAppErrorMap, { id: dtoIn });
+        }
+    
+        const dtoOut = {
+          ...item,
+          uuAppErrorMap,
+        };
+    
+        return dtoOut;
+    }
+
+    async update(awid, dtoIn) {
+        let uuAppErrorMap = {};
+    
+        let validationResult = this.validator.validate("itemUpdateDtoInType", dtoIn);
+        uuAppErrorMap = ValidationHelper.processValidationResult(
+          dtoIn,
+          validationResult,
+          uuAppErrorMap,
+          Warnings.Update.UnsupportedKeys.code,
+          Errors.Update.invalidDtoIn
+        );
+        let existingItem;
+        try {
+            existingItem = await this.dao.get(awid, dtoIn.id);
+        } catch (e) {
+          throw new Error("Error calling dao.get: " + e.message);
+        }
+      
+        if (!existingItem) {
+          throw new Errors.Get.ItemDoesNotExist(uuAppErrorMap, { id: dtoIn.id });
+        }
+
+        const updatedItem = {
+          ...dtoIn
+        };
+        updatedItem.awid = awid;
+        let newItem;
+        try {
+            newItem = await this.dao.update(updatedItem);
+        } catch (e) {
+          if (e instanceof ObjectStoreError) {
+            throw new Errors.Update.ShoppingListDaoUpdateFailed(uuAppErrorMap, e);
+          }
+          throw e;
+        }
+        
+        const dtoOut = { ...newItem, uuAppErrorMap};
+    
+        return dtoOut;
+    }
+
+    async remove(awid, dtoIn, session, authorizationResult) {
+        let uuAppErrorMap = {};
+    
+        const validationResult = this.validator.validate("itemRemoveDtoInType", dtoIn);
+    
+        uuAppErrorMap = ValidationHelper.processValidationResult(
+          dtoIn,
+          validationResult,
+          uuAppErrorMap,
+          Warnings.Remove.UnsupportedKeys.code,
+          Errors.Remove.invalidDtoIn
+        );
+    
+        let existingItem;
+        try {
+          existingItem = await this.dao.get(awid, dtoIn.id);
+        } catch (e) {
+          throw new Error("Error calling dao.get: " + e.message);
+        }
+      
+        if (!existingItem) {
+          throw new Errors.List.ItemDoesNotExist(uuAppErrorMap, { id: dtoIn.id });
+        }
+    
+        // const uuIdentity = session.getIdentity().getUuIdentity();
+        // const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
+        // if (uuIdentity !== existingItem.owner && !isAuthorities) {
+        //   throw new Errors.Remove.UserNotAuthorized({ uuAppErrorMap });
+        // }
+    
+        await this.dao.remove(awid, dtoIn.id);
+    
+        return {
+          message: "Item successfully removed.",
+          uuAppErrorMap
+        };
+    }
 }
 
 module.exports = new ItemAbl();

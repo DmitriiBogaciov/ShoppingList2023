@@ -1,4 +1,5 @@
 "use strict";
+const { ObjectId } = require("bson");
 const { UuObjectDao } = require("uu_appg01_server").ObjectStore;
 
 class ItemMongo extends UuObjectDao {
@@ -20,8 +21,20 @@ class ItemMongo extends UuObjectDao {
     return await super.find(filter);
   }
 
+  async listByIds(awid, idlist) {
+    let filter = { 
+      awid, 
+      _id: { 
+        $in: idlist.map((id) => new ObjectId(id)),
+    },
+  };
+    console.log(`listByIds filter = `,filter);
+    return await super.find(filter);
+  }
+
   async get(awid, dtoIn) {
     let filter = { awid, _id: dtoIn };
+    console.log(`Get fiter`, filter)
     return await super.findOne(filter);
   }
 

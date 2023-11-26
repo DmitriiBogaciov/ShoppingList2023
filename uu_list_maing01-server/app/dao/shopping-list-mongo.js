@@ -33,6 +33,18 @@ class ShoppingListMongo extends UuObjectDao {
   async remove(awid, id) {
     await super.deleteOne({ awid, id });
   }
+
+  async listForUser(awid, userIdentity) {
+    const filter = {
+      awid,
+      $or: [
+        { owner: userIdentity },
+        { members: userIdentity },
+      ],
+    };
+
+    return await this.collection.find(filter).toArray();
+  }
 }
 
 module.exports = ShoppingListMongo;

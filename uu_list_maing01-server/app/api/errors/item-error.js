@@ -51,7 +51,7 @@ const Get = {
   invalidDtoIn: class extends ListMainUseCaseError {
       constructor() {
         super(...arguments);
-        this.code = `${List.UC_CODE}invalidDtoIn`;
+        this.code = `${Get.UC_CODE}invalidDtoIn`;
         this.message = "DtoIn is not valid.";
       }
     },
@@ -59,7 +59,7 @@ const Get = {
     ItemDoesNotExist: class extends ListMainUseCaseError {
       constructor() {
         super(...arguments);
-        this.code = `${List.UC_CODE}ItemDoesNotExist`;
+        this.code = `${Get.UC_CODE}ItemDoesNotExist`;
         this.message = "UuObject Item does not exist.";
       }
     },
@@ -70,7 +70,7 @@ const Update = {
   invalidDtoIn: class extends ListMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${List.UC_CODE}invalidDtoIn`;
+      this.code = `${Update.UC_CODE}invalidDtoIn`;
       this.message = "DtoIn is not valid.";
     }
   },
@@ -78,7 +78,7 @@ const Update = {
   ItemDaoUpdateFailed: class extends ListMainUseCaseError {
      constructor() {
       super(...arguments);
-      this.code = `${List.UC_CODE}ItemDaoUpdateFailed`;
+      this.code = `${Update.UC_CODE}ItemDaoUpdateFailed`;
       this.message = "UuObject Item update failed.";
     }
   }, 
@@ -89,22 +89,33 @@ const Remove = {
   invalidDtoIn: class extends ListMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${List.UC_CODE}invalidDtoIn`;
+      this.code = `${Remove.UC_CODE}invalidDtoIn`;
       this.message = "DtoIn is not valid.";
     }
   },
   ItemDoesNotExist: class extends ListMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${List.UC_CODE}ItemDoesNotExist`;
+      this.code = `${Remove.UC_CODE}ItemDoesNotExist`;
       this.message = "UuObject Item does not exist.";
     }
   },
   UserNotAuthorized: class extends ListMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${List.UC_CODE}userNotAuthorized`;
+      this.code = `${Remove.UC_CODE}userNotAuthorized`;
       this.message = "User not authorized.";
+    }
+  },
+}
+
+const ListByIds = {
+  UC_CODE: `${ListMainUseCaseError.ERROR_PREFIX}/item/listByIds`,
+  invalidDtoIn: class extends ListMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListByIds.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
     }
   },
 }
@@ -114,5 +125,6 @@ module.exports = {
     List,
     Get,
     Update,
-    Remove
+    Remove,
+    ListByIds
 }
