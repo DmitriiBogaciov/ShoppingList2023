@@ -1,96 +1,93 @@
-// "use strict";
-// const CreateAbl = require("../../abl/ShoppingList/create-abl");
-// const ListAbl = require("../../abl/ShoppingList/list-abl");
-// const GetAbl = require("../../abl/ShoppingList/get-abl");
+"use strict";
+const ShoppingListAbl = require("../../abl/shopping-list-abl");
 
-// class ShoppingListController {
-//   create(ucEnv) {
-//       return CreateAbl.create(ucEnv.getUri().getAwid(), ucEnv.parameters, ucEnv.getAuthorizationResult());
-//     };
-//   }
+class ShoppingListController {
+  create(ucEnv) {
+    return ShoppingListAbl.create(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getSession().getIdentity());
+    };
 
-  // remove(ucEnv) {
-  //   let dtoIn = ucEnv.getDtoIn();
+  list(ucEnv) {
+    return ShoppingListAbl.list(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getAuthorizationResult());
+    };
 
-  //   return {
-  //     shoppingList: dtoIn.shoppingList,
-  //     uuAppErrorMap: {}
-  //   };
-  // }
+  get(ucEnv) {
+    return ShoppingListAbl.get(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getAuthorizationResult());
+  }
 
-  // list(ucEnv) {
-  //   return ListAbl.list(ucEnv.getUri().getAwid(), ucEnv.parameters, ucEnv.getAuthorizationResult());
-  // }
+  update(ucEnv) {
+    return ShoppingListAbl.update(ucEnv.getUri().getAwid(), ucEnv.parameters, ucEnv.getSession().getIdentity(), ucEnv.getAuthorizationResult());
+  }
 
-  // get(ucEnv) {
-  //   let dtoIn = ucEnv.getDtoIn();
+  remove(ucEnv) {
+    return ShoppingListAbl.remove(ucEnv.getUri().getAwid(), ucEnv.parameters, ucEnv.session, ucEnv.getAuthorizationResult());
+  }
+}
+  
 
-  //   return {
-  //     shoppingList: dtoIn.shoppingList,
-  //     uuAppErrorMap: {}
-  //   };
-  // }
+// remove(ucEnv) {
+//   let dtoIn = ucEnv.getDtoIn();
 
-  // update(ucEnv) {
-  //   let dtoIn = ucEnv.getDtoIn();
+//   return {
+//     shoppingList: dtoIn.shoppingList,
+//     uuAppErrorMap: {}
+//   };
+// }
 
-  //   return {
-  //     shoppingList: dtoIn.shoppingList,
-  //     uuAppErrorMap: {}
-  //   };
-  // }
 
-  // addMember(ucEnv) {
-  //   let dtoIn = ucEnv.getDtoIn();
 
-  //   return {
-  //     shoppingList: dtoIn.shoppingList,
-  //     uuAppErrorMap: {}
-  //   };
-  // }
 
-  // addItem(ucEnv) {
-  //   let dtoIn = ucEnv.getDtoIn();
 
-  //   return {
-  //     shoppingList: dtoIn.shoppingList,
-  //     uuAppErrorMap: {}
-  //   };
-  // }
+// addMember(ucEnv) {
+//   let dtoIn = ucEnv.getDtoIn();
 
-  // deleteItem(ucEnv) {
-  //   let dtoIn = ucEnv.getDtoIn();
-  //   return {
-  //     shoppingList: dtoIn.shoppingList,
-  //     uuAppErrorMap: {}
-  //   };
-  // }
+//   return {
+//     shoppingList: dtoIn.shoppingList,
+//     uuAppErrorMap: {}
+//   };
+// }
 
-  // markAsDone(ucEnv) {
-  //   let dtoIn = ucEnv.getDtoIn();
+// addItem(ucEnv) {
+//   let dtoIn = ucEnv.getDtoIn();
 
-  //   return {
-  //     shoppingList: dtoIn.shoppingList,
-  //     uuAppErrorMap: {}
-  //   };
-  // }
+//   return {
+//     shoppingList: dtoIn.shoppingList,
+//     uuAppErrorMap: {}
+//   };
+// }
 
-  // updateItem(ucEnv) {
-  //   let dtoIn = ucEnv.getDtoIn();
+// deleteItem(ucEnv) {
+//   let dtoIn = ucEnv.getDtoIn();
+//   return {
+//     shoppingList: dtoIn.shoppingList,
+//     uuAppErrorMap: {}
+//   };
+// }
 
-  //   return {
-  //     shoppingList: dtoIn.shoppingList,
-  //     uuAppErrorMap: {}
-  //   };
-  // }
+// markAsDone(ucEnv) {
+//   let dtoIn = ucEnv.getDtoIn();
 
-  // markItemAsDone(ucEnv) {
-  //   let dtoIn = ucEnv.getDtoIn()
+//   return {
+//     shoppingList: dtoIn.shoppingList,
+//     uuAppErrorMap: {}
+//   };
+// }
 
-  //   return {
-  //     shoppingList: dtoIn.shoppingList,
-  //     uuAppErrorMap: {}
-  //   };
-  // }
+// updateItem(ucEnv) {
+//   let dtoIn = ucEnv.getDtoIn();
+
+//   return {
+//     shoppingList: dtoIn.shoppingList,
+//     uuAppErrorMap: {}
+//   };
+// }
+
+// markItemAsDone(ucEnv) {
+//   let dtoIn = ucEnv.getDtoIn()
+
+//   return {
+//     shoppingList: dtoIn.shoppingList,
+//     uuAppErrorMap: {}
+//   };
+// }
 
 module.exports = new ShoppingListController();

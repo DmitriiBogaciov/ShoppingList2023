@@ -5,6 +5,7 @@
   "license": "License Commercial",
   "spec": "nodejs-app; uu_appg01_devkit@5.15.4",
   "dependencies": {
+    "mongodb": "^6.3.0",
     "uu_appg01_server": "^5.18.0",
     "uu_apprepresentationg01": "^2.2.0"
   },
@@ -22,7 +23,6 @@
     "package": "uu_appg01_devkit package",
     "deploy": "uu_appg01_devkit deploy",
     "undeploy": "uu_appg01_devkit undeploy",
-    "debug": "uu_appg01_devkit start --inspect",
     "start": "uu_appg01_devkit start",
     "prettify": "uu_appg01_devkit prettify",
     "vulnerabilityScan": "uu_appg01_devkit vulnerabilityScan",

@@ -1,16 +1,25 @@
-// const { shape, string, number, uu5String } = require("uu_appg01_server").Validation;
+const shoppingListCreateDtoInType = shape({
+  name: string().isRequired(),
+})
 
-// const listCreateDtoInType = shape({
-//   name: string(255).isRequired(),
-// })
+const shoppingListRemoveDtoInType = shape({
+  id: string().isRequired()
+})
 
-// const listDeleteDtoInType = shape({
-//   id: string().isRequired()
-// })
+const shoppingListListDtoInType = shape({
+  //
+})
 
-// const listListDtoInType = shape({
+const shoppingListGetDtoInType = shape({
+  id: string().isRequired(),
+});
 
-// })
+const shoppingListUpdateDtoInType = shape({
+  id: string().isRequired(),
+  name: string(),
+  members: array(),
+  items: array(),
+});
 
 // const listGetDtoInType = shape({
 //   id: string().isRequired()
@@ -41,4 +50,3 @@
 // const listMarkItemAsDoneDtoInType = shape({
 //   id: string().isRequired()
 // })
-

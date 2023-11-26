@@ -1,6 +1,37 @@
 {
   "{vendor}-{uuApp}-{uuSubApp}": {
     "useCaseMap": {
+      "shoppingList/create": {
+        "realization": "api/controllers/ShoppingListController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "shoppingList/list": {
+        "realization": "api/controllers/ShoppingListController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "shoppingList/get": {
+        "realization": "api/controllers/ShoppingListController.get",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "shoppingList/update": {
+        "realization": "api/controllers/ShoppingListController.update",
+        "httpMethod": "PUT",
+        "type": "CMD",
+        "dtoInAuditMap": {
+          "id": "$.id"
+        }
+      },
+      "shoppingList/remove": {
+        "realization": "api/controllers/ShoppingListController.remove",
+        "httpMethod": "POST",
+        "type": "CMD",
+        "dtoInAuditMap": {
+          "id": "$.id"
+        }
+      },
       "helloWorld": {
         "realization": "api/controllers/ListController.helloWorld",
         "httpMethod": "GET",

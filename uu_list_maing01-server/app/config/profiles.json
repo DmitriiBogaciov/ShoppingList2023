@@ -28,47 +28,43 @@
       },
       "helloWorld": {
         "sysStateList": ["active"],
-        "profileList": [ "Authenticated", "Public"]
+        "profileList": [ "Authenticated", "Public", "Executives"]
       },
       "shoppingList/create": {
         "sysStateList": ["active"],
-        "profileList": ["User", "Authenticated"]
+        "profileList": ["User", "Authenticated", "Executives"]
       },
-      "shoppingList/delete": {
+      "shoppingList/remove": {
         "sysStateList": ["active"],
-        "profileList": ["User", "Authenticated"]
+        "profileList": ["User", "Authenticated", "Executives"]
       },
       "shoppingList/list": {
         "sysStateList": ["active"],
-        "profileList": ["User", "Authenticated"]
+        "profileList": ["User", "Authenticated", "Executives"]
       },
       "shoppingList/get": {
         "sysStateList": ["active"],
-        "profileList": ["User", "Authenticated"]
+        "profileList": ["User", "Authenticated", "Executives"]
       },
       "shoppingList/update": {
         "sysStateList": ["active"],
-        "profileList": ["User", "Authenticated"]
-      },
-      "shoppingList/addMember": {
-        "sysStateList": ["active"],
-        "profileList": ["User", "Authenticated"]
+        "profileList": ["User", "Authenticated", "Executives"]
       },
       "shoppingList/addItem": {
         "sysStateList": ["active"],
-        "profileList": ["User", "Authenticated"]
+        "profileList": ["User", "Authenticated", "Executives"]
       },
       "shoppingList/deleteItem": {
         "sysStateList": ["active"],
-        "profileList": ["User", "Authenticated"]
+        "profileList": ["User", "Authenticated", "Executives"]
       },
       "shoppingList/markAsDone": {
         "sysStateList": ["active"],
-        "profileList": ["User", "Authenticated"]
+        "profileList": ["User", "Authenticated", "Executives"]
       },
       "shoppingList/markItemAsDone": {
         "sysStateList": ["active"],
-        "profileList": ["User", "Authenticated"]
+        "profileList": ["User", "Authenticated", "Executives"]
       },
       "shoppingList/updateItem": {
         "sysStateList": ["active"],
