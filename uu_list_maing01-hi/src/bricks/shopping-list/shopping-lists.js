@@ -1,5 +1,6 @@
 //@@viewOn:imports
-import { createVisualComponent, useSession} from "uu5g05";
+import { createVisualComponent, PropTypes, Utils, useRef, useSession } from "uu5g05";
+import { Button, Pending, useAlertBus } from "uu5g05-elements";
 import React, {useState} from "react";
 import Config from "./config/config.js";
 import {ButtonGroup, Dropdown, Navbar} from "react-bootstrap";
@@ -9,16 +10,12 @@ import Card from "react-bootstrap/Card";
 import ListCreate from "./list-create-modal";
 import ListDelete from "./list-delete-modal";
 
-//@@viewOff:imports
-
-//@@viewOn:constants
-//@@viewOff:constants
-
 //@@viewOn:css
+const Css = {
+  buttonArea: () => Config.Css.css({ textAlign: "center", marginBottom: 24 }),
+};
 //@@viewOff:css
 
-//@@viewOn:helpers
-//@@viewOff:helpers
 
 const ShoppingLists = createVisualComponent({
   //@@viewOn:statics
@@ -27,35 +24,46 @@ const ShoppingLists = createVisualComponent({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
+  propTypes: {
+    shoppingListDataList: PropTypes.object.isRequired,
+  },
   //@@viewOff:propTypes
 
   //@@viewOff:defaultProps
   defaultProps: {},
 
   render(props) {
+    const { addAlert } = useAlertBus();
     const[filter, setFilter] = useState("notReady");
-    const [shoppingLists, setShoppingLists] = useState(props.shoppingLists);
+    const [shoppingLists, setShoppingLists] = useState();
+
+    function showError(error, header = "") {
+      addAlert({
+        header,
+        message: error.message,
+        priority: "error",
+      });
+    }
 
     const handleFilterChange = (newFilter) => {
       setFilter(newFilter);
     }
 
-    const filteredShoppingLists = shoppingLists.filter((list) => {
-      if (filter === "all") {
-        return true;
-      } else if (filter === "ready") {
-        return list.done;
-      } else if (filter === "notReady") {
-        return !list.done;
-      }
-      return true;
-    });
+    // const filteredShoppingLists = shoppingListList.filter((list) => {
+    //   if (filter === "all") {
+    //     return true;
+    //   } else if (filter === "ready") {
+    //     return list.done;
+    //   } else if (filter === "notReady") {
+    //     return !list.done;
+    //   }
+    //   return true;
+    // });
 
     const handleCreateList = (listName) => {
       const newShoppingList = {
-        id: Date.now().toString(),
         name: listName,
-        memberList: [],
+        members: [],
         owner: identity,
         items: [],
         done: false
@@ -66,6 +74,11 @@ const ShoppingLists = createVisualComponent({
     };
 
     const {identity} = useSession();
+
+    //@@viewOn:render
+    const attrs = Utils.VisualComponent.getAttrs(props);
+    const shoppingListList = props.shoppingListDataList.data.filter((item) => item !== undefined);
+    console.log(shoppingListList);
 
     return (
       <div>
@@ -83,8 +96,8 @@ const ShoppingLists = createVisualComponent({
           </Dropdown>
         </Navbar>
         <div className="row" style={{marginLeft:"5px", marginRight: "5px"}}>
-          {filteredShoppingLists.map((list) => {
-            const isOwner = identity?.uuIdentity === list.owner.id;
+          {shoppingListList.map((list) => {
+            const isOwner = identity?.uuIdentity === list.owner;
             return (
               <div key={list.id} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                 <Card style={{ backgroundImage: `url(${BackgroundImage})`, backgroundSize: 'cover' }}>

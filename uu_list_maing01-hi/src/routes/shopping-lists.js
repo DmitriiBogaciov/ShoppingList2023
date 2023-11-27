@@ -1,55 +1,40 @@
 //@@viewOn:imports
-import { createVisualComponent, Utils, Content } from "uu5g05";
+import { createVisualComponent } from "uu5g05";
+import { RouteController } from "uu_plus4u5g02-app";
 import Config from "./config/config.js";
 import RouteBar from "../core/route-bar";
-import TestDataLists from "../bricks/shopping-list/testDataLists";
-import List from "../bricks/shopping-list/shopping-lists";
+import ListProvider from "../bricks/shopping-list/list-provider.js";
+import List from "../bricks/shopping-list/shopping-lists.js"
 //@@viewOff:imports
-
-//@@viewOn:constants
-//@@viewOff:constants
 
 //@@viewOn:css
 const Css = {
-  main: () => Config.Css.css({}),
+  container: () => Config.Css.css({ maxWidth: 640, margin: "0px auto" }),
+  createView: () => Config.Css.css({ margin: "24px 0px" }),
 };
 //@@viewOff:css
 
-//@@viewOn:helpers
-//@@viewOff:helpers
-
-const ShoppingLists = createVisualComponent({
+let ShoppingLists = createVisualComponent({
   //@@viewOn:statics
   uu5Tag: Config.TAG + "ShoppingLists",
-  nestingLevel: ["areaCollection", "area"],
   //@@viewOff:statics
 
-  //@@viewOn:propTypes
-  propTypes: {},
-  //@@viewOff:propTypes
-
-  //@@viewOn:defaultProps
-  defaultProps: {},
-  //@@viewOff:defaultProps
-
-  render(props) {
-    //@@viewOn:private
-    const { children } = props;
-    //@@viewOff:private
-
-    //@@viewOn:interface
-    //@@viewOff:interface
-
+  render() {
     //@@viewOn:render
-    const attrs = Utils.VisualComponent.getAttrs(props, Css.main());
-    const currentNestingLevel = Utils.NestingLevel.getNestingLevel(props, ShoppingLists);
-
-    return currentNestingLevel ? (
-      <div>
+    return (
+      <>
         <RouteBar />
-        <List shoppingLists={TestDataLists}/>
-      </div>
-    ) : null;
+        <ListProvider>
+          {(shoppingListDataList) => (
+            <RouteController routeDataObject={shoppingListDataList}>
+              <div className={Css.container()}>
+                <List shoppingListDataList={shoppingListDataList} />
+              </div>
+            </RouteController>
+          )}
+        </ListProvider>
+      </>
+    );
     //@@viewOff:render
   },
 });

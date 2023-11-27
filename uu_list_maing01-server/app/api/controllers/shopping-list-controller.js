@@ -7,7 +7,7 @@ class ShoppingListController {
     };
 
   list(ucEnv) {
-    return ShoppingListAbl.list(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getAuthorizationResult());
+    return ShoppingListAbl.list(ucEnv.getUri().getAwid(), ucEnv.parameters, ucEnv.getAuthorizationResult());
   };
 
   get(ucEnv) {

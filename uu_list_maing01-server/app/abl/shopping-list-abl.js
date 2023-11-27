@@ -76,7 +76,7 @@ class ShoppingListAbl {
     try {
       const lists = await this.dao.listForUser(awid, identity.getUuIdentity());
       const dtoOut = {
-        lists,
+        ...lists,
         uuAppErrorMap,
       };
       return dtoOut;
