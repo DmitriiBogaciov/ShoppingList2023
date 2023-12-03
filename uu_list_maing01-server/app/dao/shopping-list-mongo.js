@@ -35,15 +35,16 @@ class ShoppingListMongo extends UuObjectDao {
   }
 
   async listForUser(awid, userIdentity) {
+    console.log(`User id`, userIdentity)
     const filter = {
       awid,
       $or: [
-        { owner: userIdentity },
-        { members: userIdentity },
+        { 'owner.id': userIdentity },
+        { 'members': userIdentity },
       ],
     };
-
-    return await this.collection.find(filter).toArray();
+    
+    return await super.find(filter);
   }
 }
 

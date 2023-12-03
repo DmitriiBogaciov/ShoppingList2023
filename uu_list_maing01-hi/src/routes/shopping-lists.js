@@ -9,7 +9,7 @@ import List from "../bricks/shopping-list/shopping-lists.js"
 
 //@@viewOn:css
 const Css = {
-  container: () => Config.Css.css({ maxWidth: 640, margin: "0px auto" }),
+  container: () => Config.Css.css({ maxWidth: 1280, margin: "0px auto" }),
   createView: () => Config.Css.css({ margin: "24px 0px" }),
 };
 //@@viewOff:css

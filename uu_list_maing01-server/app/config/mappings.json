@@ -12,7 +12,7 @@
         "type": "CMD"
       },
       "shoppingList/listForUser": {
-        "realization": "api/controllers/ShoppingListController.list",
+        "realization": "api/controllers/ShoppingListController.listForUser",
         "httpMethod": "GET",
         "type": "CMD"
       },

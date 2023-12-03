@@ -7,6 +7,10 @@ import Plus4U5 from "uu_plus4u5g02";
 //     "callsBaseUri": "https://uuapp-dev.plus4u.net/vnd-app/awid"
 //   }
 
+const CALLS_BASE_URI = (
+  (process.env.NODE_ENV !== "production" ? Environment.get("callsBaseUri") : null) || Environment.appBaseUri
+).replace(/\/*$/, "/");
+
 const Calls = {
   async call(method, url, dtoIn, clientOptions) {
     const response = await Plus4U5.Utils.AppClient[method](url, dtoIn, clientOptions);
@@ -44,6 +48,32 @@ const Calls = {
       const commandUri = Calls.getCommandUri("shoppingList/list");
       return Calls.call("get", commandUri, dtoIn);
     },
+
+    create(dtoIn) {
+      const commandUri = Calls.getCommandUri("shoppingList/create");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+
+    listForUser(dtoIn) {
+      const commandUri = Calls.getCommandUri("shoppingList/listForUser");
+      return Calls.call("get", commandUri, dtoIn);
+    },
+
+    get(dtoIn) {
+      const commandUri = Calls.getCommandUri("shoppingList/get");
+      return Calls.call("get", commandUri, dtoIn);
+    },
+
+    update(dtoIn) {
+      const commandUri = Calls.getCommandUri("shoppingList/update");
+      return Calls.call("put", commandUri, dtoIn);
+    },
+
+    remove(dtoIn) {
+      const commandUri = Calls.getCommandUri("shoppingList/remove");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+
   },
 
   getCommandUri(useCase, baseUri = Environment.appBaseUri) {

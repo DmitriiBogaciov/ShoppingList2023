@@ -125,5 +125,6 @@ module.exports = {
     List,
     Get,
     Update,
-    Remove
+    Remove,
+    ListForUser
 }

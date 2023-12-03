@@ -23,28 +23,32 @@ const ListProvider = createComponent({
       handlerMap: {
         load: handleLoad,
         // loadNext: handleLoadNext,
-        // create: handleCreate,
+        create: handleCreate,
       },
       itemHandlerMap: {
-        // update: handleUpdate,
+        update: handleUpdate,
         // delete: handleDelete,
       },
+      pageSize: 3,
     });
 
     const imageUrlListRef = useRef([]);
 
-    async function handleLoad(dtoIn) {
-        console.log("Sending request to the server:", dtoIn);
-      
-        try {
-          const dtoOut = await Calls.ShoppingList.list(dtoIn);
-          console.log("Received response from the server:", dtoOut);
-          return dtoOut;
-        } catch (error) {
-          console.error("Error loading data:", error);
-          throw error; // Пробросим ошибку дальше
-        }
-      }
+    // function handleLoad(dtoIn) {
+    //   return Calls.ShoppingList.list(dtoIn);
+    // }
+
+    function handleLoad(dtoIn) {
+      return Calls.ShoppingList.listForUser(dtoIn);
+    }
+
+    function handleCreate(dtoIn) {
+      return Calls.ShoppingList.create(dtoIn);
+    }
+
+    function handleUpdate(dtoIn) {
+      return Calls.ShoppingList.update(dtoIn);
+    }
 
     useEffect(() => {
       // We don't use it to store reference on another React component

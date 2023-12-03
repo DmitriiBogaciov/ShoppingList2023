@@ -35,7 +35,10 @@ const ListCreate = createVisualComponent({
       e.preventDefault();
 
       if (listName.trim() !== "") {
-        props.onCreateList(listName);
+        const newShoppingList = {
+          name: listName
+        }
+        props.onCreateList(newShoppingList);
         setListName('');
       }
 

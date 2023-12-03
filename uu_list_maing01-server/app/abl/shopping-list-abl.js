@@ -15,30 +15,33 @@ class ShoppingListAbl {
   async create(awid, dtoIn, identity) {
 
     const addedValues = {
-           owner: identity.getUuIdentity(),
-           awid: awid,
-           members: [],
-           items: [],
-           done: false
-         }
+      owner: {
+        id: identity.getUuIdentity(),
+        name: identity.getName(),
+      },
+      awid: awid,
+      members: [],
+      items: [],
+      done: false
+    }
 
     let uuAppErrorMap = {};
     let validationResult = this.validator.validate("shoppingListCreateDtoInType", dtoIn);
     uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult, uuAppErrorMap, Warnings.Create.UnsupportedKeys.code, Errors.Create.invalidDtoIn);
-    
+
     let dtoOut;
     const uuObject = {
       ...dtoIn,
       ...addedValues,
     };
     try {
-        dtoOut = await this.dao.create(uuObject);
+      dtoOut = await this.dao.create(uuObject);
     } catch (e) {
-        if (e instanceof ObjectStoreError) {
-            throw new Errors.Create.ShoppingListDaoCreateFaild({ uuAppErrorMap }, e)
-        }
+      if (e instanceof ObjectStoreError) {
+        throw new Errors.Create.ShoppingListDaoCreateFaild({ uuAppErrorMap }, e)
+      }
 
-        throw e;
+      throw e;
     }
 
     dtoOut.uuAppErrorMap = uuAppErrorMap;
@@ -58,7 +61,7 @@ class ShoppingListAbl {
     } catch (e) {
       throw new Error("Error calling dao.list: " + e.message);
     }
-  
+
     const dtoOut = {
       ...list,
       uuAppErrorMap,
@@ -127,17 +130,17 @@ class ShoppingListAbl {
     } catch (e) {
       throw new Error("Error calling dao.get: " + e.message);
     }
-  
+
     if (!existingList) {
       throw new Errors.List.ShoppingListDoesNotExist(uuAppErrorMap, { id: dtoIn.id });
     }
 
     const uuIdentity = identity.getUuIdentity();
     const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
-    if (uuIdentity !== existingList.owner && !isAuthorities) {
+    if (uuIdentity !== existingList.owner.id && !isAuthorities) {
       throw new Errors.Update.UserNotAuthorized({ uuAppErrorMap });
     }
-  
+
     const updatedList = {
       ...dtoIn
     };
@@ -151,8 +154,8 @@ class ShoppingListAbl {
       }
       throw e;
     }
-    
-    const dtoOut = { ...newList, uuAppErrorMap};
+
+    const dtoOut = { ...newList, uuAppErrorMap };
 
     return dtoOut;
   }
@@ -176,7 +179,7 @@ class ShoppingListAbl {
     } catch (e) {
       throw new Error("Error calling dao.get: " + e.message);
     }
-  
+
     if (!existingList) {
       throw new Errors.List.ShoppingListDoesNotExist(uuAppErrorMap, { id: dtoIn.id });
     }
@@ -193,7 +196,7 @@ class ShoppingListAbl {
       message: "Shopping list successfully removed.",
       uuAppErrorMap
     };
-  }  
+  }
 }
 
 module.exports = new ShoppingListAbl();
