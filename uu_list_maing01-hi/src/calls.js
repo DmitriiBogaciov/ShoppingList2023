@@ -66,7 +66,7 @@ const Calls = {
 
     update(dtoIn) {
       const commandUri = Calls.getCommandUri("shoppingList/update");
-      return Calls.call("put", commandUri, dtoIn);
+      return Calls.call("post", commandUri, dtoIn);
     },
 
     remove(dtoIn) {
@@ -74,6 +74,28 @@ const Calls = {
       return Calls.call("post", commandUri, dtoIn);
     },
 
+  },
+
+  Item: {
+    listByIds(dtoIn) {
+      const commandUri = Calls.getCommandUri("item/listByIds");
+      return Calls.call("get", commandUri, dtoIn);
+    },
+
+    create(dtoIn) {
+      const commandUri = Calls.getCommandUri("item/create");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+
+    update(dtoIn) {
+      const commandUri = Calls.getCommandUri("item/update");
+      return Calls.call("put", commandUri, dtoIn);
+    },
+
+    remove(dtoIn) {
+      const commandUri = Calls.getCommandUri("item/remove");
+      return Calls.call("post", commandUri, dtoIn);
+    },
   },
 
   getCommandUri(useCase, baseUri = Environment.appBaseUri) {

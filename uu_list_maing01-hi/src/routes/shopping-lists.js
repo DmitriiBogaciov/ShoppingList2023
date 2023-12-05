@@ -3,7 +3,7 @@ import { createVisualComponent } from "uu5g05";
 import { RouteController } from "uu_plus4u5g02-app";
 import Config from "./config/config.js";
 import RouteBar from "../core/route-bar";
-import ListProvider from "../bricks/shopping-list/list-provider.js";
+import ListProvider from "../bricks/shopping-list/providers/list-provider.js";
 import List from "../bricks/shopping-list/shopping-lists.js"
 //@@viewOff:imports
 

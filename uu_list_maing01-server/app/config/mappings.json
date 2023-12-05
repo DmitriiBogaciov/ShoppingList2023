@@ -23,7 +23,7 @@
       },
       "shoppingList/update": {
         "realization": "api/controllers/ShoppingListController.update",
-        "httpMethod": "PUT",
+        "httpMethod": "POST",
         "type": "CMD",
         "dtoInAuditMap": {
           "id": "$.id"

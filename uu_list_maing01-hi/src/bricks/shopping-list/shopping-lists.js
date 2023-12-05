@@ -33,6 +33,7 @@ const ShoppingLists = createVisualComponent({
   defaultProps: {},
 
   render(props) {
+    console.log(`List handlerMap`, props.shoppingListDataList.handlerMap);
     const [, setRoute] = useRoute();
     const [shoppingLists, setShoppingLists] = useState(props.shoppingListDataList.data);
     console.log(`Shopping lists`, shoppingLists)
@@ -64,13 +65,12 @@ const ShoppingLists = createVisualComponent({
 
     async function handleCreateList(newShoppingList) {
       try {
-        console.log(`Creating list`, newShoppingList);
         const createdList = await props.shoppingListDataList.handlerMap.create(newShoppingList);
-        console.log(`List created successfully`);
         console.log(`created list`, createdList);
     
         // Reload the page after successful creation
-        window.location.reload();
+        // window.location.reload();
+        setRoute("shoppingListDetail", { listId: createdList.id });
       } catch (error) {
         console.error("Error creating list:", error);
         throw error;
@@ -103,9 +103,10 @@ const ShoppingLists = createVisualComponent({
           {filteredShoppingLists.map((list) => {
             const isOwner = identity?.uuIdentity === list.data.owner.id;
             return (
-              <div key={list.id} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+              <div key={list.data.id} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                 <Card style={{ backgroundImage: `url(${BackgroundImage})`, backgroundSize: 'cover' }}>
-                  <Card.Title onClick={() => setRoute("shoppingListDetail")} style={{ marginLeft: "20px", marginTop: '20px', minHeight: '100px', color: "white" }}>
+                  <Card.Title onClick={() => setRoute("shoppingListDetail", { listId: list.data.id , itemIds: list.data.items})} style={{ marginLeft: "20px", marginTop: '20px', minHeight: '100px', color: "white" }}>
+                    {console.log(`list items:`, list.data.items)}
                     {list.data.name}
                   </Card.Title>
                   <Card.Text>

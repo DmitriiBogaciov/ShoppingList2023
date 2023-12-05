@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import { createComponent, useDataList, useEffect, useRef } from "uu5g05";
-import Config from "./config/config";
+import Config from "../config/config";
 import Calls from "calls";
 //@@viewOff:imports
 
@@ -33,11 +33,7 @@ const ListProvider = createComponent({
     });
 
     const imageUrlListRef = useRef([]);
-
-    // function handleLoad(dtoIn) {
-    //   return Calls.ShoppingList.list(dtoIn);
-    // }
-
+    
     function handleLoad(dtoIn) {
       return Calls.ShoppingList.listForUser(dtoIn);
     }

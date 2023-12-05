@@ -1,18 +1,19 @@
 //@@viewOn:imports
-import {createVisualComponent, useSession, Utils} from "uu5g05";
-import Uu5Elements from "uu5g05-elements";
+import {createVisualComponent, PropTypes } from "uu5g05";
+import { RouteController } from "uu_plus4u5g02-app";
 import Config from "./config/config.js";
 import RouteBar from "../core/route-bar";
 import ListDetail from "../bricks/shopping-list/listDetail";
-import TestShoppingList from "../bricks/shopping-list/testDataList"
-import {useState} from "react";
+import ListDetailProvider from "../bricks/shopping-list/providers/listDetail-provider.js";
+import ItemProvider from "../bricks/shopping-list/providers/item-provider.js"
 
 //@@viewOff:imports
 
-//@@viewOn:constants
-//@@viewOff:constants
-
 //@@viewOn:css
+const Css = {
+  container: () => Config.Css.css({ maxWidth: 1280, margin: "0px auto" }),
+  createView: () => Config.Css.css({ margin: "24px 0px" }),
+};
 //@@viewOff:css
 
 //@@viewOn:helpers
@@ -25,31 +26,30 @@ const ShoppingListDetail = createVisualComponent({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  propTypes: {},
-  //@@viewOff:propTypes
-
-  //@@viewOn:defaultProps
-  defaultProps: {
-    data: TestShoppingList
+  propTypes: {
+    listId: PropTypes.string.isRequired,
+    // itemIds: PropTypes.array.isRequired,
   },
-  //@@viewOff:defaultProps
 
   render(props) {
-    //@@viewOn:private
-    //@@viewOff:private
-
-    //@@viewOn:interface
-    //@@viewOff:interface
-
-    //@@viewOn:render
-    const currentNestingLevel = Utils.NestingLevel.getNestingLevel(props, ShoppingListDetail);
-
-    return currentNestingLevel ? (
-      <div>
+    return (
+      <>
         <RouteBar />
-        <ListDetail shoppingList = {TestShoppingList} />
-      </div>
-    ) : null;
+        <ListDetailProvider listId={props.params.listId}>
+          {(listDataObject) => (
+            <RouteController routeDataObject={listDataObject}>
+              <div className={Css.container()}>
+                <ItemProvider listId={props.params.listId} itemIds={props.params.itemIds}>
+                  {(itemtDataObject) => (
+                    <ListDetail listDataObject={listDataObject} itemtDataObject={itemtDataObject} />
+                  )}
+                </ItemProvider>
+              </div>
+            </RouteController>
+          )}
+        </ListDetailProvider>
+      </>
+    );
     //@@viewOff:render
   },
 });

@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { createVisualComponent} from "uu5g05";
+import { createVisualComponent, PropTypes} from "uu5g05";
 import React, {useState} from "react";
 import Uu5Elements from "uu5g05-elements";
 import Config from "./config/config.js";
@@ -27,14 +27,21 @@ const ListDetail = createVisualComponent({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
+  propTypes: {
+    listDataObject: PropTypes.object.isRequired,
+    itemtDataObject: PropTypes.object.isRequired,
+  },
   //@@viewOff:propTypes
 
   //@@viewOff:defaultProps
   defaultProps: {},
 
   render(props) {
-    const [list, setList] = useState(props.shoppingList);
-    const [items, setItems] = useState(props.shoppingList.items);
+    console.log(`Item handlerMap`, props.itemtDataObject.handlerMap);
+    console.log(`List handlerMap`, props.listDataObject.handlerMap);
+    console.log(`listDetail props: `,props);
+    const [list, setList] = useState(props.listDataObject.data);
+    const [items, setItems] = useState(props.listDataObject.data.items);
     const [sortBy, setSortBy] = useState('status');
     const [sortButton, setSortButton] = useState('Sort by name');
     const [isEditItemModalShown, setEditItemModalShow] = useState(false);
@@ -83,13 +90,20 @@ const ListDetail = createVisualComponent({
       setEditItemModalShow(false);
     };
 
-    const handleCreateItemSave = (newName, newCount) => {
+    async function handleCreateItemSave(newName, newCount) {
       const newItem = {
-        id: generateUniqueId(),
         name: newName,
         count: newCount,
-        isDone: false // Устанавливайте начальное значение isDone по вашему усмотрению
       };
+      try {
+        const createdItem = await props.itemtDataObject.handlerMap.create(newItem);
+        console.log(`created item`, createdItem.id)
+        const updatedList = await props.itemtDataObject.handlerMap.listUpdate({id: list.id, items: [...items, createdItem.id]});
+        console.log(`Updated list: `, updatedList);
+      } catch (error) {
+        console.log("Error creating item:", error);
+        throw error;
+      }
       setItems((prevItems) => [...prevItems, newItem]);
       setCreateNewItemModalShown(false);
     }
