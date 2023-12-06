@@ -9,7 +9,8 @@ const { Schemas, Profiles } = require("./constants");
 class ItemAbl {
     constructor() {
         this.validator = Validator.load();
-        this.dao = DaoFactory.getDao(Schemas.ITEM)
+        this.dao = DaoFactory.getDao(Schemas.ITEM);
+        this.listDao = DaoFactory.getDao(Schemas.SHOPPING_LIST);
     }
 
     async create(awid, dtoIn) {
@@ -177,6 +178,22 @@ class ItemAbl {
         // if (uuIdentity !== existingItem.owner && !isAuthorities) {
         //   throw new Errors.Remove.UserNotAuthorized({ uuAppErrorMap });
         // }
+        let existingList;
+
+        try {
+          existingList = await this.listDao.get(awid, dtoIn.listId);
+        } catch (e) {
+          throw new Error("Error calling dao.get: " + e.message);
+        }
+
+        if (existingList) {
+          existingList.items = existingList.items.filter((id) => id !== dtoIn.id);
+          try {
+            await this.listDao.update({ id: existingList.id, items: existingList.items, awid: existingList.awid });
+          } catch (e) {
+            throw new Error("Error calling dao.update: " + e.message);
+          }
+        }
     
         await this.dao.remove(awid, dtoIn.id);
     

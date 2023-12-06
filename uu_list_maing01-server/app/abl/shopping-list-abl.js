@@ -9,7 +9,8 @@ const { Schemas, Profiles } = require("./constants");
 class ShoppingListAbl {
   constructor() {
     this.validator = Validator.load();
-    this.dao = DaoFactory.getDao(Schemas.SHOPPING_LIST)
+    this.dao = DaoFactory.getDao(Schemas.SHOPPING_LIST);
+    this.itemDao = DaoFactory.getDao(Schemas.ITEM);
   }
 
   async create(awid, dtoIn, identity) {
@@ -188,6 +189,14 @@ class ShoppingListAbl {
     const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
     if (uuIdentity !== existingList.owner.id && !isAuthorities) {
       throw new Errors.Remove.UserNotAuthorized({ uuAppErrorMap });
+    }
+
+    for (const itemId of existingList.items) {
+      try {
+        await this.itemDao.remove(awid, itemId);
+      } catch (e) {
+        console.error(`Error removing item ${itemId}:`, e.message);
+      }
     }
 
     await this.dao.remove(awid, dtoIn.id);

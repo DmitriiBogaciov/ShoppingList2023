@@ -39,10 +39,10 @@ const ItemProvider = createComponent({
     const imageUrlListRef = useRef([]);
 
     function handleLoad() {
-      // console.log(`Props to load items: `, props);
-      const idList = props.itemIds.split(',');
-      // console.log(`Request to load items: `, idList);
-      return Calls.Item.listByIds({ idList });
+      console.log(`Props to load items: `, props);
+      const idList = props.itemIds ? props.itemIds.split(',') : [];
+      console.log(`Request to load items: `, {idList: idList});
+      return Calls.Item.listByIds({idList: idList});
     }
 
     function handleCreate(dtoIn) {

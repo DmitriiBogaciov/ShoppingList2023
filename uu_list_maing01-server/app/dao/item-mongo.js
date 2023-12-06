@@ -22,13 +22,20 @@ class ItemMongo extends UuObjectDao {
   }
 
   async listByIds(awid, idlist) {
+    if (!Array.isArray(idlist)) {
+      idlist = [];
+    }
+  
+    // Теперь можно безопасно использовать map
     let filter = { 
       awid, 
       _id: { 
         $in: idlist.map((id) => new ObjectId(id)),
-    },
-  };
-    console.log(`listByIds filter = `,filter);
+      },
+    };
+  
+    console.log(`listByIds filter = `, filter);
+  
     return await super.find(filter);
   }
 

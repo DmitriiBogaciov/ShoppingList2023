@@ -1,10 +1,11 @@
 const itemCreateDtoInType = shape({
     name: string().isRequired(),
-    count: number()
+    count: number(),
 });
 
 const itemRemoveDtoInType = shape({
-id: string().isRequired()
+id: string().isRequired(),
+listId: string().isRequired(),
 });
   
 const itemListDtoInType = shape({
