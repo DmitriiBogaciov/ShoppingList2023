@@ -186,7 +186,7 @@ class ShoppingListAbl {
 
     const uuIdentity = session.getIdentity().getUuIdentity();
     const isAuthorities = authorizationResult.getAuthorizedProfiles().includes(Profiles.AUTHORITIES);
-    if (uuIdentity !== existingList.owner && !isAuthorities) {
+    if (uuIdentity !== existingList.owner.id && !isAuthorities) {
       throw new Errors.Remove.UserNotAuthorized({ uuAppErrorMap });
     }
 

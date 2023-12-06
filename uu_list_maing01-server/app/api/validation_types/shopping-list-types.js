@@ -18,7 +18,7 @@ const shoppingListUpdateDtoInType = shape({
   id: string().isRequired(),
   name: string(),
   members: array(),
-  items: array(),
+  items: array(string()),
   done: boolean()
 });
 

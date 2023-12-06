@@ -10,9 +10,9 @@ const ListDetailProvider = createComponent({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  propTypes: {
-    listId: PropTypes.string.isRequired,
-  },
+  // propTypes: {
+  //   listId: PropTypes.string.isRequired,
+  // },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
@@ -45,9 +45,9 @@ const ListDetailProvider = createComponent({
       return Calls.ShoppingList.create(dtoIn);
     }
 
-    // function handleUpdate(dtoIn) {
-    //   return Calls.ShoppingList.update(dtoIn);
-    // }
+    function handleUpdate(dtoIn) {
+      return Calls.ShoppingList.update(dtoIn);
+    }
 
     useEffect(() => {
       // We don't use it to store reference on another React component

@@ -1,11 +1,13 @@
 //@@viewOn:imports
-import {createVisualComponent, PropTypes } from "uu5g05";
+import { createVisualComponent, PropTypes } from "uu5g05";
 import { RouteController } from "uu_plus4u5g02-app";
+
 import Config from "./config/config.js";
 import RouteBar from "../core/route-bar";
 import ListDetail from "../bricks/shopping-list/listDetail";
 import ListDetailProvider from "../bricks/shopping-list/providers/listDetail-provider.js";
 import ItemProvider from "../bricks/shopping-list/providers/item-provider.js"
+import DataObjectStateResolver from "../core/data-object-state-resolver.js";
 
 //@@viewOff:imports
 
@@ -27,7 +29,7 @@ const ShoppingListDetail = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    listId: PropTypes.string.isRequired,
+    // listId: PropTypes.string.isRequired,
     // itemIds: PropTypes.array.isRequired,
   },
 
@@ -40,8 +42,10 @@ const ShoppingListDetail = createVisualComponent({
             <RouteController routeDataObject={listDataObject}>
               <div className={Css.container()}>
                 <ItemProvider listId={props.params.listId} itemIds={props.params.itemIds}>
-                  {(itemtDataObject) => (
-                    <ListDetail listDataObject={listDataObject} itemtDataObject={itemtDataObject} />
+                  {(itemDataObject) => (
+                    <DataObjectStateResolver dataObject={itemDataObject}>
+                      <ListDetail listDataObject={listDataObject} itemDataObject={itemDataObject} />
+                    </DataObjectStateResolver>
                   )}
                 </ItemProvider>
               </div>

@@ -21,11 +21,12 @@ const ItemProvider = createComponent({
 
   render(props) {
     //@@viewOn:private
-    const itemtDataObject = useDataObject({
+    const itemDataObject = useDataObject({
       handlerMap: {
         load: handleLoad,
         // loadNext: handleLoadNext,
         listUpdate: handleListUpdate,
+        getItems: handleGetItems,
         create: handleCreate,
       },
       itemHandlerMap: {
@@ -38,9 +39,9 @@ const ItemProvider = createComponent({
     const imageUrlListRef = useRef([]);
 
     function handleLoad() {
-      console.log(`Props to load items: `, props);
+      // console.log(`Props to load items: `, props);
       const idList = props.itemIds.split(',');
-      console.log(`Request to load items: `, idList);
+      // console.log(`Request to load items: `, idList);
       return Calls.Item.listByIds({ idList });
     }
 
@@ -55,6 +56,11 @@ const ItemProvider = createComponent({
     // function handleDelete(dtoIn) {
     //     return Calls.Item.remove(dtoIn);
     // }
+
+    function handleGetItems(dtoIn) {
+      console.log(`Dtoin to load items`, dtoIn);
+      return Calls.Item.listByIds({idList: dtoIn});
+    }
 
     function handleListUpdate(dtoIn) {
         console.log(`DtoIn to update shopping with new item`, dtoIn)
@@ -71,7 +77,7 @@ const ItemProvider = createComponent({
     //@@viewOff:private
 
     //@@viewOn:render
-    return typeof props.children === "function" ? props.children(itemtDataObject) : props.children;
+    return typeof props.children === "function" ? props.children(itemDataObject) : props.children;
     //@@viewOff:render
   },
 });
