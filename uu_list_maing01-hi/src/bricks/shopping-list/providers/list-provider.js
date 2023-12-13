@@ -24,9 +24,9 @@ const ListProvider = createComponent({
         load: handleLoad,
         // loadNext: handleLoadNext,
         create: handleCreate,
+        delete: handleDelete,
       },
       itemHandlerMap: {
-        update: handleUpdate,
         // delete: handleDelete,
       },
       pageSize: 3,
@@ -42,8 +42,8 @@ const ListProvider = createComponent({
       return Calls.ShoppingList.create(dtoIn);
     }
 
-    function handleUpdate(dtoIn) {
-      return Calls.ShoppingList.update(dtoIn);
+    function handleDelete(dtoIn) {
+      return Calls.ShoppingList.remove(dtoIn);
     }
 
     useEffect(() => {

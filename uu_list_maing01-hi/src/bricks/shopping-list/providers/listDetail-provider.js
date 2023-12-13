@@ -24,8 +24,9 @@ const ListDetailProvider = createComponent({
     const listDataObject = useDataObject({
       handlerMap: {
         load: handleLoad,
+        update: handleUpdate,
         // loadNext: handleLoadNext,
-        create: handleCreate,
+        // create: handleCreate,
       },
       itemHandlerMap: {
         // update: handleUpdate,
@@ -39,10 +40,6 @@ const ListDetailProvider = createComponent({
     function handleLoad() {
         console.log(`getting date for list with request: `, props.listId)
       return Calls.ShoppingList.get({id: props.listId});
-    }
-
-    function handleCreate(dtoIn) {
-      return Calls.ShoppingList.create(dtoIn);
     }
 
     function handleUpdate(dtoIn) {

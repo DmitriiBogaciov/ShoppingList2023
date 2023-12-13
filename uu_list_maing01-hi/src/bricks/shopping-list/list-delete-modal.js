@@ -1,12 +1,10 @@
 import Icon from "@mdi/react";
-import {Form, Modal, Button, Navbar, Container, Nav, Card} from 'react-bootstrap';
+import {Modal, Button } from 'react-bootstrap';
 import React, { useState, useEffect, useMemo } from 'react'
 import {createVisualComponent} from "uu5g05";
 import Config from "./config/config";
-import Uu5Elements from "uu5g05-elements";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPenToSquare, faTrash} from "@fortawesome/free-solid-svg-icons";
-import {mdiPlus} from "@mdi/js";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
 
 const ListDelete = createVisualComponent({
   //@@viewOn:statics
@@ -26,6 +24,12 @@ const ListDelete = createVisualComponent({
     const handleShowModal = () => setShow(true);
     const handleCloseModal = () => setShow(false);
 
+    const handleDeleteList = () => {
+      console.log(`Props in delete modal`, props)
+      props.onDeleteList({id: props.listId});
+      handleCloseModal();
+    }
+
     return (
       <div>
         <Modal show={isDeleteModalShown} onHide={handleCloseModal}>
@@ -39,7 +43,7 @@ const ListDelete = createVisualComponent({
             <Button variant="secondary" onClick={handleCloseModal}>
               Cancel
             </Button>
-            <Button variant="danger" onClick={handleCloseModal}>
+            <Button variant="danger" onClick={handleDeleteList}>
               Delete
             </Button>
           </Modal.Footer>

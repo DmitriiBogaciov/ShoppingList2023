@@ -25,9 +25,10 @@ const ItemProvider = createComponent({
       handlerMap: {
         load: handleLoad,
         // loadNext: handleLoadNext,
-        listUpdate: handleListUpdate,
         getItems: handleGetItems,
         create: handleCreate,
+        update: handleUpdate,
+        delete: handleDelete,
       },
       itemHandlerMap: {
         // update: handleUpdate,
@@ -49,22 +50,17 @@ const ItemProvider = createComponent({
       return Calls.Item.create(dtoIn);
     }
 
-    // function handleUpdate(dtoIn) {
-    //   return Calls.Item.update(dtoIn);
-    // }
+    function handleUpdate(dtoIn) {
+      return Calls.Item.update(dtoIn);
+    }
 
-    // function handleDelete(dtoIn) {
-    //     return Calls.Item.remove(dtoIn);
-    // }
+    function handleDelete(dtoIn) {
+        return Calls.Item.remove(dtoIn);
+    }
 
     function handleGetItems(dtoIn) {
       console.log(`Dtoin to load items`, dtoIn);
       return Calls.Item.listByIds({idList: dtoIn});
-    }
-
-    function handleListUpdate(dtoIn) {
-        console.log(`DtoIn to update shopping with new item`, dtoIn)
-        return Calls.ShoppingList.update(dtoIn);
     }
 
     useEffect(() => {

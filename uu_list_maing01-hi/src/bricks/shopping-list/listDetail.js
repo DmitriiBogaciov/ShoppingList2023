@@ -1,11 +1,12 @@
 //@@viewOn:imports
-import { createVisualComponent, PropTypes } from "uu5g05";
+import { createVisualComponent, PropTypes, useSession } from "uu5g05";
 import React, { useState, useEffect } from "react";
 import Uu5Elements from "uu5g05-elements";
 import Config from "./config/config.js";
 import { Card, Button, Navbar, Nav, Container } from "react-bootstrap";
 import EditItemModal from "./editItemModal";
 import EditListModal from "./editListModal";
+import CreateItemModal from "./createItemModal.js"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 
@@ -46,14 +47,11 @@ const ListDetail = createVisualComponent({
     // console.log(`Items: `, items);
     const [sortBy, setSortBy] = useState('status');
     const [sortButton, setSortButton] = useState('Sort by name');
-    const [isEditItemModalShown, setEditItemModalShow] = useState(false);
-    const [isEditListModalShown, setEditListModalShown] = useState(false);
-    const [isCreateNewItemModalShown, setCreateNewItemModalShown] = useState(false);
-    const [editItemName, setEditItemName] = useState('');
-    const [editItemCount, setEditItemCount] = useState('');
-    const [editListName, setEditListName] = useState('');
     const [newItemName, setNewItemName] = useState('');
     const [newItemCount, setNewItemCount] = useState('');
+
+    const { identity } = useSession();
+    const isOwner = identity?.uuIdentity === list.owner.id;
 
     useEffect(() => {
       const loadItems = async () => {
@@ -65,8 +63,6 @@ const ListDetail = createVisualComponent({
           console.error("Error loading items:", error);
         }
       };
-
-      // Вызовите функцию загрузки при монтировании компонента
       loadItems();
     }, []);
 
@@ -85,49 +81,46 @@ const ListDetail = createVisualComponent({
       }
     };
 
-    const handleEditItemClick = (item) => {
-      setEditItemName(item.name);
-      setEditItemCount(item.count);
-      setEditItemModalShow(true);
-    };
-    const handleEditListClick = (list) => {
-      setEditListName(list.name)
-      setEditListModalShown(true);
-    };
-    const handleCreateNewItemClick = () => {
-      setNewItemName('');
-      setNewItemCount('');
-      setCreateNewItemModalShown(true);
-    };
-
-    const handleEditItemSave = (newName, newCount) => {
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          ({ ...item, name: newName, count: newCount })));
-      setEditItemModalShow(false);
-    };
-
-    async function handleCreateItemSave(newName, newCount) {
-      const newItem = {
-        name: newName,
-        count: newCount,
-      };
+    async function handleEditItemSave(newItem) {
       try {
-        const createdItem = await props.itemDataObject.handlerMap.create(newItem);
-        console.log(`created item`, createdItem.id)
-        const updatedList = await props.itemDataObject.handlerMap.listUpdate({ id: list.id, items: [...list.items, createdItem.id] });
-        console.log(`Updated list: `, updatedList);
+        const editedItem = await props.itemDataObject.handlerMap.update(newItem);
+
+        setItems((prevItems) =>
+          prevItems.map((item) =>
+            item.id === editedItem.id ? editedItem : item
+          )
+        );
       } catch (error) {
-        console.log("Error creating item:", error);
+        console.error("Error to update item", error);
         throw error;
       }
-      setItems((prevItems) => [...prevItems, newItem]);
-      setCreateNewItemModalShown(false);
     }
 
-    const handleEditListSave = (newName) => {
-      setList((prevList) => ({ ...prevList, name: newName }));
-      setEditListModalShown(false);
+    async function handleCreateItemSave(newItem) {
+      try {
+        const createdItem = await props.itemDataObject.handlerMap.create(newItem);
+        
+        setItems((prevItems) => [...prevItems, createdItem]);
+    
+        const updatedList = await props.listDataObject.handlerMap.update({
+          id: list.id,
+          items: [...list.items, createdItem.id],
+        });
+    
+        console.log(`Updated list: `, updatedList);
+      } catch (error) {
+        console.error("Ошибка при сохранении элемента", error);
+        throw error;
+      }
+    }
+
+    async function handleEditListSave(newList) {
+      try {
+        const editedList = await props.listDataObject.handlerMap.update(newList);
+      } catch (error) {
+        console.error("Error updating list:", error);
+        throw error;
+      }
     }
 
     const toggleEdit = (id) => {
@@ -136,24 +129,6 @@ const ListDetail = createVisualComponent({
           item.id === id ? { ...item, isDone: !item.isDone } : item));
     };
 
-    const handleEditItemNameChange = (e) => {
-      setEditItemName(e.target.value);
-    };
-    const handleEditItemCountChange = (e) => {
-      setEditItemCount(e.target.value);
-    };
-    const handleEditListNameChange = (e) => {
-      setEditListName(e.target.value);
-    }
-    const handleCreateItemNameChange = (e) => {
-      setNewItemName(e.target.value);
-    };
-    const handleCreateItemCountChange = (e) => {
-      setNewItemCount(e.target.value);
-    };
-
-
-
     const handleDelete = (id) => {
       setItems((prevItems) => prevItems.filter((item) => item.id !== id));
     };
@@ -161,10 +136,6 @@ const ListDetail = createVisualComponent({
       sortedItems.sort((a, b) => a.isDone - b.isDone);
     } else if (sortBy === "name") {
       sortedItems.sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    function generateUniqueId() {
-      return Date.now().toString(36) + Math.random().toString(36).substring(2);
     }
 
     return (
@@ -176,7 +147,12 @@ const ListDetail = createVisualComponent({
               <Nav className="mr-auto">
                 <Button className="button-sort btn btn-info" variant="primary" style={{ margin: "10px 0 0 10px" }}
                   onClick={toggleSort}>{sortButton}</Button>
-                <Button className="button-sort btn btn-info" variant="primary" style={{ margin: "10px 0 0 10px" }} onClick={() => handleEditListClick(list)}>Edit</Button>
+                {isOwner &&
+                  <EditListModal
+                    list={list}
+                    onEditList={handleEditListSave}
+                  />
+                }
               </Nav>
             </Container>
           </Navbar.Collapse>
@@ -193,9 +169,10 @@ const ListDetail = createVisualComponent({
                 </div>
                 <Uu5Elements.Block
                   header={
-                    <Button className="btn btn-info" onClick={handleCreateNewItemClick} style={{ lineHeight: "1", padding: "2", fontSize: "14px", maxWidth: "90px", margin: "10px 10px 10px 5px" }}>
-                      Add item
-                    </Button>
+                    isOwner && (
+                      <CreateItemModal 
+                      onSave={handleCreateItemSave} />
+                    )
                   }
                   actionList={[
                     { icon: "uugdsstencil-user-account-key", children: list.owner.name },
@@ -223,7 +200,12 @@ const ListDetail = createVisualComponent({
                       <div className="col">
                         {!item.isDone &&
                           <div className="row manageItem">
-                            <FontAwesomeIcon className="col" icon={faPenToSquare} onClick={() => handleEditItemClick(item)} />
+                            {isOwner &&
+                              <EditItemModal
+                                item={item}
+                                onSave={handleEditItemSave}
+                              />
+                            }
                             <FontAwesomeIcon className="col" icon={faTrash} onClick={() => handleDelete(item.id)} />
                           </div>
                         }
@@ -236,16 +218,7 @@ const ListDetail = createVisualComponent({
           </div>
         </div>
 
-        <EditItemModal
-          title={"Edit item"} //edit item
-          show={isEditItemModalShown}
-          onHide={() => setEditItemModalShow(false)}
-          item={{ name: editItemName, count: editItemCount }}
-          onNameChange={handleEditItemNameChange}
-          onCountChange={handleEditItemCountChange}
-          onSave={handleEditItemSave}
-        />
-        <EditItemModal //add new item
+        {/* <EditItemModal //add new item
           title={"Create item"}
           show={isCreateNewItemModalShown}
           onHide={() => setCreateNewItemModalShown(false)}
@@ -253,14 +226,8 @@ const ListDetail = createVisualComponent({
           onNameChange={handleCreateItemNameChange}
           onCountChange={handleCreateItemCountChange}
           onSave={handleCreateItemSave}
-        />
-        <EditListModal
-          show={isEditListModalShown}
-          onHide={() => setEditListModalShown(false)}
-          list={{ name: editListName }}
-          onNameChange={handleEditListNameChange}
-          onSave={handleEditListSave}
-        />
+        /> */}
+
       </div>
     );
   }

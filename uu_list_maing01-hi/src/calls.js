@@ -89,7 +89,7 @@ const Calls = {
 
     update(dtoIn) {
       const commandUri = Calls.getCommandUri("item/update");
-      return Calls.call("put", commandUri, dtoIn);
+      return Calls.call("post", commandUri, dtoIn);
     },
 
     remove(dtoIn) {

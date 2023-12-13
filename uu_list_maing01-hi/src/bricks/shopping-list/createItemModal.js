@@ -5,37 +5,38 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Config from './config/config';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
-const EditModal = createVisualComponent({
+const CreateModal = createVisualComponent({
   uu5Tag: Config.TAG + 'EditModal',
   nestingLevel: ['areaCollection', 'area'],
 
   defaultProps: {},
 
   render(props) {
-    console.log(`props to edit Item`, props);
-    const [isEditModalShown, setShow] = useState(false);
-    const [editedItem, setEditedItem] = useState({ ...props.item });
+    console.log(`props to create Item`, props);
+    const [isCreateModalShown, setShow] = useState(false);
+    const [createdItem, setCreatedItem] = useState('');
 
     const handleShowModal = () => setShow(true);
     const handleCloseModal = () => setShow(false);
 
     const handleEditItem = (property, value) => {
-      setEditedItem((prevItem) => ({ ...prevItem, [property]: value }));
+      setCreatedItem((prevItem) => ({ ...prevItem, [property]: value }));
     };
 
     const handleSave = () => {
-      props.onSave(editedItem);
+      props.onSave(createdItem);
       handleCloseModal();
     };
 
     return (
       <div>
-        <FontAwesomeIcon className="col" icon={faPenToSquare}
-          onClick={handleShowModal}
-        />
-        <Modal show={isEditModalShown} onHide={handleCloseModal}>
+        <Button className="col"
+          onClick={handleShowModal}>
+            +add
+        </Button>
+        <Modal show={isCreateModalShown} onHide={handleCloseModal}>
           <Modal.Header>
-            <Modal.Title>Edit Item</Modal.Title>
+            <Modal.Title>Create Item</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form className="row">
@@ -43,7 +44,7 @@ const EditModal = createVisualComponent({
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   type="text"
-                  value={editedItem.name}
+                  value={createdItem.name}
                   onChange={(e) => handleEditItem('name', e.target.value)}
                 />
               </Form.Group>
@@ -51,7 +52,7 @@ const EditModal = createVisualComponent({
                 <Form.Label>Count</Form.Label>
                 <Form.Control
                   type="text"
-                  value={editedItem.count}
+                  value={createdItem.count}
                   onChange={(e) => handleEditItem('count', e.target.value)}
                 />
               </Form.Group>
@@ -71,4 +72,4 @@ const EditModal = createVisualComponent({
   },
 });
 
-export default EditModal;
+export default CreateModal;

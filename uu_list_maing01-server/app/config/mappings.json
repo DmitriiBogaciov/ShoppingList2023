@@ -59,7 +59,7 @@
       },
       "item/update": {
         "realization": "api/controllers/ItemController.update",
-        "httpMethod": "PUT",
+        "httpMethod": "POST",
         "type": "CMD",
         "dtoInAuditMap": {
           "id": "$.id"
