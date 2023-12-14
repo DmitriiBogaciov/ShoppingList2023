@@ -2,9 +2,9 @@
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory, ObjectStoreError } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
-const Errors = require("../api/errors/item-error");
+const Errors = require("../api/errors/item-error.js");
 const Warnings = require("../api/warnings/item-warnings.js");
-const { Schemas, Profiles } = require("./constants");
+const { Schemas, Profiles } = require("./constants.js");
 
 class ItemAbl {
     constructor() {

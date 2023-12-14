@@ -129,13 +129,19 @@ const ListDetail = createVisualComponent({
           item.id === id ? { ...item, isDone: !item.isDone } : item));
     };
 
-    const handleDelete = (id) => {
-      setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-    };
-    if (sortBy === "status") {
-      sortedItems.sort((a, b) => a.isDone - b.isDone);
-    } else if (sortBy === "name") {
-      sortedItems.sort((a, b) => a.name.localeCompare(b.name));
+    async function handleRemoveItem(id) {
+      try {
+        // Удалите элемент из сервера
+        await props.itemDataObject.handlerMap.remove({ id, listId: list.id });
+    
+        // Обновите состояние items, убрав удаленный элемент
+        setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    
+        console.log(`Item with id ${id} removed successfully.`);
+      } catch (error) {
+        console.error("Ошибка при удалении элемента", error);
+        throw error;
+      }
     }
 
     return (
@@ -206,7 +212,7 @@ const ListDetail = createVisualComponent({
                                 onSave={handleEditItemSave}
                               />
                             }
-                            <FontAwesomeIcon className="col" icon={faTrash} onClick={() => handleDelete(item.id)} />
+                            <FontAwesomeIcon className="col" icon={faTrash} onClick={() => handleRemoveItem(item.id)} />
                           </div>
                         }
                       </div>

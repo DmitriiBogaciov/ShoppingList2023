@@ -28,7 +28,7 @@ const ItemProvider = createComponent({
         getItems: handleGetItems,
         create: handleCreate,
         update: handleUpdate,
-        delete: handleDelete,
+        remove: handleDelete,
       },
       itemHandlerMap: {
         // update: handleUpdate,
