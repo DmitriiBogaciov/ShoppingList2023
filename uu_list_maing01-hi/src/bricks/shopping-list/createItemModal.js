@@ -3,7 +3,7 @@ import { Form, Modal, Button } from 'react-bootstrap';
 import { createVisualComponent } from 'uu5g05';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Config from './config/config';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const CreateModal = createVisualComponent({
   uu5Tag: Config.TAG + 'EditModal',
@@ -30,10 +30,11 @@ const CreateModal = createVisualComponent({
 
     return (
       <div>
-        <Button className="col"
-          onClick={handleShowModal}>
-            +add
-        </Button>
+        <FontAwesomeIcon icon={faPlus}
+          size="xl"
+          onClick={handleShowModal}
+          style={{marginLeft: "5px"}}
+        />
         <Modal show={isCreateModalShown} onHide={handleCloseModal}>
           <Modal.Header>
             <Modal.Title>Create Item</Modal.Title>

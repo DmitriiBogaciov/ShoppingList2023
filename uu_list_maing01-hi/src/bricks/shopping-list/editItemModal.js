@@ -29,9 +29,10 @@ const EditModal = createVisualComponent({
     };
 
     return (
-      <div>
-        <FontAwesomeIcon className="col" icon={faPenToSquare}
+      <div className="col d-flex justify-content-end align-items-center">
+        <FontAwesomeIcon icon={faPenToSquare}
           onClick={handleShowModal}
+          size='sm'
         />
         <Modal show={isEditModalShown} onHide={handleCloseModal}>
           <Modal.Header>

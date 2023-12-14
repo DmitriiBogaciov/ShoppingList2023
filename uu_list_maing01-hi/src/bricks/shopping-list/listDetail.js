@@ -8,7 +8,7 @@ import EditItemModal from "./editItemModal";
 import EditListModal from "./editListModal";
 import CreateItemModal from "./createItemModal.js"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faUser } from '@fortawesome/free-solid-svg-icons'
 
 //@@viewOff:imports
 
@@ -38,18 +38,10 @@ const ListDetail = createVisualComponent({
   defaultProps: {},
 
   render(props) {
-    // console.log(`Item handlerMap`, props.itemDataObject.handlerMap);
-    // console.log(`List handlerMap`, props.listDataObject.handlerMap);
-    console.log(`itemDataObject: `, props.itemDataObject);
     const [list, setList] = useState(props.listDataObject.data);
-    console.log(`List: `, list);
     const [items, setItems] = useState([]);
-    // console.log(`Items: `, items);
-    const [sortBy, setSortBy] = useState('status');
+    const [sortBy, setSortBy] = useState(null);
     const [sortButton, setSortButton] = useState('Sort by name');
-    const [newItemName, setNewItemName] = useState('');
-    const [newItemCount, setNewItemCount] = useState('');
-
     const { identity } = useSession();
     const isOwner = identity?.uuIdentity === list.owner.id;
 
@@ -99,7 +91,7 @@ const ListDetail = createVisualComponent({
     async function handleCreateItemSave(newItem) {
       try {
         const createdItem = await props.itemDataObject.handlerMap.create(newItem);
-        
+    
         setItems((prevItems) => [...prevItems, createdItem]);
     
         const updatedList = await props.listDataObject.handlerMap.update({
@@ -107,9 +99,10 @@ const ListDetail = createVisualComponent({
           items: [...list.items, createdItem.id],
         });
     
-        console.log(`Updated list: `, updatedList);
+        // Обновите состояние list после успешного обновления
+        setList(updatedList);
       } catch (error) {
-        console.error("Ошибка при сохранении элемента", error);
+        console.error("Error creating item", error);
         throw error;
       }
     }
@@ -117,6 +110,7 @@ const ListDetail = createVisualComponent({
     async function handleEditListSave(newList) {
       try {
         const editedList = await props.listDataObject.handlerMap.update(newList);
+        setList(editedList);
       } catch (error) {
         console.error("Error updating list:", error);
         throw error;
@@ -133,10 +127,10 @@ const ListDetail = createVisualComponent({
       try {
         // Удалите элемент из сервера
         await props.itemDataObject.handlerMap.remove({ id, listId: list.id });
-    
+
         // Обновите состояние items, убрав удаленный элемент
         setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-    
+
         console.log(`Item with id ${id} removed successfully.`);
       } catch (error) {
         console.error("Ошибка при удалении элемента", error);
@@ -173,19 +167,21 @@ const ListDetail = createVisualComponent({
                     <h2>{list.name}</h2>
                   </Card.Title>
                 </div>
-                <Uu5Elements.Block
-                  header={
-                    isOwner && (
-                      <CreateItemModal 
-                      onSave={handleCreateItemSave} />
-                    )
-                  }
-                  actionList={[
-                    { icon: "uugdsstencil-user-account-key", children: list.owner.name },
-                  ]}
-                  headerSeparator={true}
-                >
-                </Uu5Elements.Block>
+                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ccc", marginBottom: "10px", paddingBottom: "5px"}}>
+                  <div>
+                    {isOwner && (
+                      <CreateItemModal
+                        onSave={handleCreateItemSave}
+                      />
+                    )}
+                  </div>
+                  <div className="user" style={{marginRight: "5px"}}>
+                    <FontAwesomeIcon icon={faUser} size="lg" style={{marginRight: "5px"}}/>
+                    {list.owner && (
+                      <span>{list.owner.name}</span>
+                    )}
+                  </div>
+                </div>
                 <div>
                   {sortedItems.map((item) => (
                     <div className="row list-item" key={item.id}>
@@ -202,7 +198,7 @@ const ListDetail = createVisualComponent({
                           </label>
                         </div>
                       </div>
-                      <div className="col">{item.count}</div>
+                      <div className="col col-auto align-items-center">{item.count}</div>
                       <div className="col">
                         {!item.isDone &&
                           <div className="row manageItem">
@@ -212,7 +208,9 @@ const ListDetail = createVisualComponent({
                                 onSave={handleEditItemSave}
                               />
                             }
-                            <FontAwesomeIcon className="col" icon={faTrash} onClick={() => handleRemoveItem(item.id)} />
+                            <div className="col align-items-center">
+                              <FontAwesomeIcon size="sm" icon={faTrash} onClick={() => handleRemoveItem(item.id)} />
+                            </div>
                           </div>
                         }
                       </div>
