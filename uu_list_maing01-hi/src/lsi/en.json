@@ -32,7 +32,54 @@
   "Menu": {
     "home": "Welcome",
     "about": "About Application",
-    "ShoppingListDetail": "ShoppingList",
     "ShoppingLists": "ShoppingLists"
+  },
+  "Lists": {
+    "filter": "Filter",
+    "filterAll": "All",
+    "filterReady": "Ready",
+    "filterNotReady": "Not ready"
+  },
+  "CreateList": {
+    "createList": "Create list",
+    "name": "Name",
+    "create": "Create"
+  },
+  "ListDetail": {
+    "sort": "Sort",
+    "sortDefault": "Default",
+    "sortByName": "Sort by Name",
+    "sortByCount": "Sort by count",
+    "markAsDone": "Mark as Done",
+    "markAsUndone": "Mark as undone",
+    "showOnlyUndoneItems": "Show only undone items",
+    "showAllItems": "Show all items"
+  },
+  "ListEdit": {
+    "edit": "Edit",
+    "name": "Name",
+    "members": "Members",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "CreateItem": {
+    "createItem": "Create Item",
+    "name": "Name",
+    "count": "Count",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "EditItem": {
+    "editItem": "Edit Item",
+    "name": "Name",
+    "count": "Count",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "DeleteList": {
+    "deleteList": "Delete List",
+    "messageDelete": "Are you sure you want to delete the list ",
+    "cancel": "Cancel",
+    "delete": "Delete"
   }
 }

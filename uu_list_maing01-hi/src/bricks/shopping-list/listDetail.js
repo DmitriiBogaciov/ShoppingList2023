@@ -1,14 +1,14 @@
 //@@viewOn:imports
-import { createVisualComponent, PropTypes, useSession } from "uu5g05";
+import { createVisualComponent, PropTypes, useSession, Lsi } from "uu5g05";
 import React, { useState, useEffect } from "react";
-import Uu5Elements from "uu5g05-elements";
 import Config from "./config/config.js";
-import { Card, Button, Navbar, Nav, Container } from "react-bootstrap";
+import { Card, Button, Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import EditItemModal from "./editItemModal";
 import EditListModal from "./editListModal";
-import CreateItemModal from "./createItemModal.js"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faUser } from '@fortawesome/free-solid-svg-icons'
+import CreateItemModal from "./createItemModal.js";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faUser, faCheck } from '@fortawesome/free-solid-svg-icons';
+import importLsi from "../../lsi/import-lsi.js";
 
 //@@viewOff:imports
 
@@ -40,8 +40,9 @@ const ListDetail = createVisualComponent({
   render(props) {
     const [list, setList] = useState(props.listDataObject.data);
     const [items, setItems] = useState([]);
-    const [sortBy, setSortBy] = useState(null);
-    const [sortButton, setSortButton] = useState('Sort by name');
+    const [sortType, setSortType] = useState("default");
+    const [showOnlyUndoneItems, setShowOnlyUndoneItems] = useState(false);
+
     const { identity } = useSession();
     const isOwner = identity?.uuIdentity === list.owner.id;
 
@@ -49,29 +50,38 @@ const ListDetail = createVisualComponent({
       const loadItems = async () => {
         try {
           const loadedItems = await props.itemDataObject.handlerMap.getItems(list.items);
-          setItems(loadedItems.items.itemList || []);
-          console.log(`Loaded Items with getItems: `, loadedItems.items.itemList);
+          const sortedItems = sortItems(loadedItems.items.itemList, sortType);
+          setItems(sortedItems);
+          console.log(`Loaded Items with getItems: `, sortedItems);
         } catch (error) {
           console.error("Error loading items:", error);
         }
       };
       loadItems();
-    }, []);
+    }, [sortType]);
 
-
-    let sortedItems = [...items];
-    const toggleSort = () => {
-      if (sortBy === 'status') {
-        setSortBy('name');
-        setSortButton('Unsorted')
-      } else if (sortBy === "name") {
-        setSortBy(null);
-        setSortButton('Sort by status')
-      } else {
-        setSortBy('status');
-        setSortButton('Sort by name')
+    const sortItems = (items, sortBy) => {
+      switch (sortBy) {
+        case "default":
+          return items.sort((a, b) => a.done - b.done);
+        case "name":
+          return items.sort((a, b) => a.name.localeCompare(b.name));
+        case "count":
+          return items.sort((a, b) => a.count - b.count);
+        default:
+          return items;
       }
     };
+
+    const handleSortClick = (sortBy) => {
+      setSortType(sortBy);
+    };
+
+    const handleToggleShowOnlyUndoneItems = () => {
+      setShowOnlyUndoneItems(!showOnlyUndoneItems);
+    };
+
+    const filteredItems = showOnlyUndoneItems ? items.filter(item => !item.done) : items;
 
     async function handleEditItemSave(newItem) {
       try {
@@ -91,14 +101,14 @@ const ListDetail = createVisualComponent({
     async function handleCreateItemSave(newItem) {
       try {
         const createdItem = await props.itemDataObject.handlerMap.create(newItem);
-    
+
         setItems((prevItems) => [...prevItems, createdItem]);
-    
+
         const updatedList = await props.listDataObject.handlerMap.update({
           id: list.id,
           items: [...list.items, createdItem.id],
         });
-    
+
         // Обновите состояние list после успешного обновления
         setList(updatedList);
       } catch (error) {
@@ -117,10 +127,24 @@ const ListDetail = createVisualComponent({
       }
     }
 
-    const toggleEdit = (id) => {
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === id ? { ...item, isDone: !item.isDone } : item));
+    async function toggleEdit(id) {
+      try {
+        const currentItem = items.find(item => item.id === id);
+
+        const updatedItem = await props.itemDataObject.handlerMap.update({
+          id: id,
+          done: !currentItem.done
+        });
+
+        setItems((prevItems) =>
+          prevItems.map((item) =>
+            item.id === id ? { ...item, done: !item.done } : item
+          )
+        );
+      } catch (error) {
+        console.error("Error updating item done:", error);
+        throw error;
+      }
     };
 
     async function handleRemoveItem(id) {
@@ -138,36 +162,83 @@ const ListDetail = createVisualComponent({
       }
     }
 
+    async function markListDone() {
+      try {
+        const updatedList = await props.listDataObject.handlerMap.update({
+          id: list.id,
+          done: !list.done,
+        });
+        setList(updatedList);
+
+        console.log(`List with id ${list.id} marked as done successfully.`);
+      } catch (error) {
+        console.error("Error marking list as done:", error);
+        throw error;
+      }
+    }
+
     return (
       <div className="list-page">
-        <Navbar bg="light" expand="lg" className="mb-3">
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Container>
-              <Nav className="mr-auto">
-                <Button className="button-sort btn btn-info" variant="primary" style={{ margin: "10px 0 0 10px" }}
-                  onClick={toggleSort}>{sortButton}</Button>
-                {isOwner &&
-                  <EditListModal
-                    list={list}
-                    onEditList={handleEditListSave}
-                  />
-                }
-              </Nav>
-            </Container>
-          </Navbar.Collapse>
-        </Navbar>
+        <Container style={{ maxWidth: "700px" }}>
 
-        <div className="container">
+        </Container>
+
+        <Container style={{ maxWidth: "700px", minWidth: "350px" }}>
           <div className="row main">
             <div className="col">
-              <Card className="list-detail mx-auto" style={{ maxWidth: "700px", minWidth: "350px" }}>
+              <Card className="list-detail mx-auto" >
                 <div className="list-name">
                   <Card.Title className="text-center">
                     <h2>{list.name}</h2>
                   </Card.Title>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ccc", marginBottom: "10px", paddingBottom: "5px"}}>
+                <Navbar bg="white" expand="lg" style={{ marginLeft: "5px" }}>
+                  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                  <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto">
+                      <NavDropdown title={<Lsi import={importLsi} path={["ListDetail", "sort"]} />} id="basic-nav-dropdown">
+                        <NavDropdown.Item
+                          onClick={() => handleSortClick("default")}
+                          className="d-flex justify-content-between align-items-center"
+                        >
+                          <span><Lsi import={importLsi} path={["ListDetail", "sortDefault"]} /></span>
+                          {sortType === "default" && <FontAwesomeIcon icon={faCheck} className="text-primary" />}
+                        </NavDropdown.Item>
+                        <NavDropdown.Item
+                          onClick={() => handleSortClick("name")}
+                          className="d-flex justify-content-between align-items-center"
+                        >
+                          <span><Lsi import={importLsi} path={["ListDetail", "sortByName"]} /></span>
+                          {sortType === "name" && <FontAwesomeIcon icon={faCheck} className="text-primary" />}
+                        </NavDropdown.Item>
+                        <NavDropdown.Item
+                          onClick={() => handleSortClick("count")}
+                          className="d-flex justify-content-between align-items-center"
+                        >
+                          <span><Lsi import={importLsi} path={["ListDetail", "sortByCount"]} /></span>
+                          {sortType === "count" && <FontAwesomeIcon icon={faCheck} className="text-primary" />}
+                        </NavDropdown.Item>
+                      </NavDropdown>
+
+                      <Nav.Link
+                        onClick={handleToggleShowOnlyUndoneItems}>
+                        {showOnlyUndoneItems ? <Lsi import={importLsi} path={["ListDetail", "showAllItems"]} /> : <Lsi import={importLsi} path={["ListDetail", "showOnlyUndoneItems"]} />}
+                      </Nav.Link>
+
+                      {isOwner && (
+                        <EditListModal
+                          list={list}
+                          onEditList={handleEditListSave}
+                        />
+                      )}
+                      <Nav.Link
+                        onClick={markListDone}>
+                        {list.done ? <Lsi import={importLsi} path={["ListDetail", "markAsUndone"]} /> : <Lsi import={importLsi} path={["ListDetail", "markAsDone"]} />}
+                      </Nav.Link>
+                    </Nav>
+                  </Navbar.Collapse>
+                </Navbar>
+                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ccc", marginBottom: "10px", paddingBottom: "5px" }}>
                   <div>
                     {isOwner && (
                       <CreateItemModal
@@ -175,24 +246,26 @@ const ListDetail = createVisualComponent({
                       />
                     )}
                   </div>
-                  <div className="user" style={{marginRight: "5px"}}>
-                    <FontAwesomeIcon icon={faUser} size="lg" style={{marginRight: "5px"}}/>
+                  <div className="user" style={{ marginRight: "5px" }}>
+                    <FontAwesomeIcon icon={faUser} size="lg" style={{ marginRight: "5px" }} />
                     {list.owner && (
                       <span>{list.owner.name}</span>
                     )}
                   </div>
                 </div>
                 <div>
-                  {sortedItems.map((item) => (
+                  {filteredItems.map((item) => (
                     <div className="row list-item" key={item.id}>
                       <div className="col">
                         <div className="form-check" style={{ paddingLeft: "30px" }}>
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            checked={item.isDone}
-                            onChange={() => toggleEdit(item.id)}
-                          />
+                          {list.done === false && (
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              checked={item.done}
+                              onChange={() => toggleEdit(item.id)}
+                            />
+                          )}
                           <label className="form-check-label" htmlFor={`checkbox-${item.id}`}>
                             {item.name}
                           </label>
@@ -200,19 +273,19 @@ const ListDetail = createVisualComponent({
                       </div>
                       <div className="col col-auto align-items-center">{item.count}</div>
                       <div className="col">
-                        {!item.isDone &&
+                        {!list.done && !item.done && (
                           <div className="row manageItem">
-                            {isOwner &&
+                            {isOwner && (
                               <EditItemModal
                                 item={item}
                                 onSave={handleEditItemSave}
                               />
-                            }
-                            <div className="col align-items-center">
+                            )}
+                            <div className="col col-auto align-items-center" style={{ marginRight: "10px" }}>
                               <FontAwesomeIcon size="sm" icon={faTrash} onClick={() => handleRemoveItem(item.id)} />
                             </div>
                           </div>
-                        }
+                        )}
                       </div>
                     </div>
                   ))}
@@ -220,18 +293,7 @@ const ListDetail = createVisualComponent({
               </Card>
             </div>
           </div>
-        </div>
-
-        {/* <EditItemModal //add new item
-          title={"Create item"}
-          show={isCreateNewItemModalShown}
-          onHide={() => setCreateNewItemModalShown(false)}
-          item={{ name: newItemName, count: newItemCount }}
-          onNameChange={handleCreateItemNameChange}
-          onCountChange={handleCreateItemCountChange}
-          onSave={handleCreateItemSave}
-        /> */}
-
+        </Container>
       </div>
     );
   }

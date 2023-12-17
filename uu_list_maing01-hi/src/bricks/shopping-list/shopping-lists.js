@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { createVisualComponent, PropTypes, Utils, useSession, useRoute } from "uu5g05";
+import { createVisualComponent, PropTypes, Utils, useSession, useRoute, Lsi } from "uu5g05";
 import { Button, Pending, useAlertBus } from "uu5g05-elements";
 import React, { useState } from "react";
 import Config from "./config/config.js";
@@ -9,6 +9,7 @@ import Card from "react-bootstrap/Card";
 
 import ListCreate from "./list-create-modal";
 import ListDelete from "./list-delete-modal";
+import importLsi from "../../lsi/import-lsi.js";
 
 //@@viewOn:css
 const Css = {
@@ -85,13 +86,13 @@ const ShoppingLists = createVisualComponent({
         await props.shoppingListDataList.handlerMap.delete(listId);
 
         const updatedLists = shoppingLists.filter((list) => list.data.id !== listId.id);
-    
+
         // Update the state 
         setShoppingLists(updatedLists);
-    
+
         // Log 
         console.log(`List with ID ${listId.id} has been deleted.`);
-    
+
       } catch (error) {
         console.error("Error deleting list:", error);
         showError(error, "Error Deleting List");
@@ -109,12 +110,18 @@ const ShoppingLists = createVisualComponent({
           />
           <Dropdown as={ButtonGroup} style={{ marginLeft: "10px" }}>
             <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
-              Filter
+              <Lsi import={importLsi} path={["Lists", "filter"]} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => handleFilterChange("all")}>All</Dropdown.Item>
-              <Dropdown.Item onClick={() => handleFilterChange("ready")}>Ready</Dropdown.Item>
-              <Dropdown.Item onClick={() => handleFilterChange("notReady")}>Not Ready</Dropdown.Item>
+              <Dropdown.Item onClick={() => handleFilterChange("all")}>
+                <Lsi import={importLsi} path={["Lists", "filterAll"]} />
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => handleFilterChange("ready")}>
+                <Lsi import={importLsi} path={["Lists", "filterReady"]} />
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => handleFilterChange("notReady")}>
+                <Lsi import={importLsi} path={["Lists", "filterNotReady"]} />
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Navbar>

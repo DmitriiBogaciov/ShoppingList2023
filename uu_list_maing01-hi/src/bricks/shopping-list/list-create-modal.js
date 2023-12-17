@@ -1,12 +1,13 @@
 import Icon from "@mdi/react";
-import {Form, Modal, Button, Navbar, Container, Nav, Card} from 'react-bootstrap';
+import { Form, Modal, Button, Navbar, Container, Nav, Card } from 'react-bootstrap';
 import React, { useState, useEffect, useMemo } from 'react'
-import {createVisualComponent} from "uu5g05";
+import { createVisualComponent, Lsi } from "uu5g05";
 import Config from "./config/config";
 import Uu5Elements from "uu5g05-elements";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPenToSquare, faTrash} from "@fortawesome/free-solid-svg-icons";
-import {mdiPlus} from "@mdi/js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { mdiPlus } from "@mdi/js";
+import importLsi from "../../lsi/import-lsi.js";
 
 const ListCreate = createVisualComponent({
   //@@viewOn:statics
@@ -50,11 +51,15 @@ const ListCreate = createVisualComponent({
         <Modal show={isModalShown} onHide={handleCloseModal}>
           <Form className="mx-auto" onSubmit={handleCreateList}>
             <Modal.Header closeButton>
-              <Modal.Title>Create list</Modal.Title>
+              <Modal.Title>
+                <Lsi import={importLsi} path={["CreateList", "createList"]} />
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form.Group className="mb-3">
-                <Form.Label>Name</Form.Label>
+                <Form.Label>
+                  <Lsi import={importLsi} path={["CreateList", "name"]} />
+                </Form.Label>
                 <Form.Control
                   type="text"
                   value={listName}
@@ -63,14 +68,14 @@ const ListCreate = createVisualComponent({
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="primary" type="submit">Create</Button>
+              <Button variant="primary" type="submit"><Lsi import={importLsi} path={["CreateList", "create"]} /></Button>
             </Modal.Footer>
           </Form>
         </Modal>
         <Icon path={mdiPlus}
-              style={{color:"whitesmoke", cursor: "pointer", alignSelf: 'center', marginLeft: '15px'}}
-              size={1.3}
-              onClick={handleShowModal}
+          style={{ color: "whitesmoke", cursor: "pointer", alignSelf: 'center', marginLeft: '15px' }}
+          size={1.3}
+          onClick={handleShowModal}
         />
       </div>
     )

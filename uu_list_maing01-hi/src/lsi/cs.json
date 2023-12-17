@@ -32,7 +32,54 @@
   "Menu": {
     "home": "Vítejte",
     "about": "O aplikaci",
-    "ShoppingListDetail": "ShoppingList",
-    "ShoppingLists": "ShoppingLists"
+    "ShoppingLists": "Nákupní seznamy"
+  },
+  "Lists": {
+    "filter": "Filtr",
+    "filterAll": "Vše",
+    "filterReady": "Hotovo",
+    "filterNotReady": "Není hotovo"
+  },
+  "CreateList": {
+    "createList": "Vytvořit seznam",
+    "name": "Název",
+    "create": "Vytvořit"
+  },
+  "ListDetail": {
+    "sort": "Řadit",
+    "sortDefault": "Výchozí",
+    "sortByName": "Řadit podle jména",
+    "sortByCount": "Řadit podle počtu",
+    "markAsDone": "Označit jako Hotovo",
+    "markAsUndone": "Označit jako Nevyřízené",
+    "showOnlyUndoneItems": "Zobrazit pouze nevyřízené položky",
+    "showAllItems": "Zobrazit všechny položky"
+  },
+  "ListEdit": {
+    "edit": "Upravit",
+    "name": "Název",
+    "members": "Členové",
+    "cancel": "Zrušit",
+    "save": "Uložit"
+  },
+  "CreateItem": {
+    "createItem": "Vytvořit položku",
+    "name": "Název",
+    "count": "Počet",
+    "save": "Uložit",
+    "cancel": "Zrušit"
+  },
+  "EditItem": {
+    "editItem": "Upravit položku",
+    "name": "Název",
+    "count": "Počet",
+    "save": "Uložit",
+    "cancel": "Zrušit"
+  },
+  "DeleteList": {
+    "deleteList": "Smazat seznam",
+    "messageDelete": "Opravdu chcete smazat seznam ",
+    "cancel": "Zrušit",
+    "delete": "Smazat"
   }
 }

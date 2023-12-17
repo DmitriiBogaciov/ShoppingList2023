@@ -1,9 +1,12 @@
 import { Form, Modal, Button } from 'react-bootstrap';
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { createVisualComponent } from 'uu5g05';
+import { createVisualComponent, Lsi } from 'uu5g05';
 import Config from './config/config';
 import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Nav } from 'react-bootstrap';
+import importLsi from "../../lsi/import-lsi.js";
+
 
 const EditModal = createVisualComponent({
   uu5Tag: Config.TAG + 'EditModal',
@@ -52,69 +55,75 @@ const EditModal = createVisualComponent({
 
     return (
       <div>
-        <Button
-          className="button-edit btn btn-info"
-          variant="primary"
-          style={{ margin: '10px 0 0 10px' }}
+        <Nav.Link
+          variant="outline-secondary"
           onClick={handleShowModal}
         >
-          Edit
-        </Button>
+          <Lsi import={importLsi} path={["ListEdit", "edit"]} />
+        </Nav.Link>
 
         <Modal show={isEditModalShown} onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Edit List</Modal.Title>
+            <Modal.Title><Lsi import={importLsi} path={["ListEdit", "edit"]} /></Modal.Title>
           </Modal.Header>
           <Modal.Body>
-              <Form.Text >Name</Form.Text>
-              <Form.Control style={{ marginTop: "5px", marginBottom: "10px" }}
-                type="text"
-                value={editedList.name}
-                onChange={(e) => handleEditList('name', e.target.value)}
-              />
-              <Form.Group controlId="newMemberInput" style={{ marginBottom: "15px" }}>
-              <Form.Text>Members</Form.Text>
+            <Form.Text>
+              <Lsi import={importLsi} path={["ListEdit", "name"]} />
+            </Form.Text>
+            <Form.Control
+              style={{ width: "100%" }}
+              type="text"
+              value={editedList.name}
+              onChange={(e) => handleEditList('name', e.target.value)}
+            />
+            <Form.Group controlId="newMemberInput" style={{ marginBottom: "15px" }}>
+              <Form.Text>
+              <Lsi import={importLsi} path={["ListEdit", "members"]} />
+              </Form.Text>
               <div className="row">
-                <Form.Control className="col"
-                  type="text"
-                  placeholder="Add Member"
-                  value={newMember}
-                  onChange={(e) => setNewMember(e.target.value)}
-                />
-                <Button className="col" style={{ maxWidth: "40px", marginLeft: "5px" }} variant="primary" onClick={handleAddMember}>
-                  <FontAwesomeIcon icon={faPlus} />
-                </Button>
+                <div className="col">
+                  <Form.Control
+                    type="text"
+                    placeholder={"Add Member"}
+                    value={newMember}
+                    onChange={(e) => setNewMember(e.target.value)}
+                  />
+                </div>
+                <div className="col-auto" >
+                  <Button variant="primary" onClick={handleAddMember}>
+                    <FontAwesomeIcon icon={faPlus} />
+                  </Button>
+                </div>
               </div>
             </Form.Group>
             {editedList.members.map((member, index) => (
-                <div
-                  className="row"
-                  key={index}
-                  style={{
-                    borderBottom: "1px solid #ccc",
-                    marginBottom: "8px",
-                    paddingBottom: "8px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div style={{ flex: 20 }}>{member}</div>
-                  <div style={{ flex: 1 }}>
-                    <FontAwesomeIcon
-                      className="col"
-                      icon={faTrash}
-                      onClick={() => handleDeleteMember(index)}
-                    />
-                  </div>
+              <div
+                className="row"
+                key={index}
+                style={{
+                  borderBottom: "1px solid #ccc",
+                  marginBottom: "8px",
+                  paddingBottom: "8px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div style={{ flex: 20 }}>{member}</div>
+                <div style={{ flex: 1 }}>
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    onClick={() => handleDeleteMember(index)}
+                  />
                 </div>
-              ))}
+              </div>
+            ))}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseModal}>
-              Cancel
+            <Lsi import={importLsi} path={["ListEdit", "cancel"]} />
             </Button>
             <Button variant="primary" onClick={handleEditListSave}>
-              Save
+            <Lsi import={importLsi} path={["ListEdit", "save"]} />
             </Button>
           </Modal.Footer>
         </Modal>

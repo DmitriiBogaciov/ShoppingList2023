@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Modal, Button } from 'react-bootstrap';
-import { createVisualComponent } from 'uu5g05';
+import { createVisualComponent, Lsi } from 'uu5g05';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Config from './config/config';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import importLsi from "../../lsi/import-lsi.js";
 
 const CreateModal = createVisualComponent({
   uu5Tag: Config.TAG + 'EditModal',
@@ -37,12 +38,16 @@ const CreateModal = createVisualComponent({
         />
         <Modal show={isCreateModalShown} onHide={handleCloseModal}>
           <Modal.Header>
-            <Modal.Title>Create Item</Modal.Title>
+            <Modal.Title>
+              <Lsi import={importLsi} path={["CreateItem", "createItem"]} />
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form className="row">
               <Form.Group className="col" style={{ maxWidth: "70%", margin: "0 10px 0 10px" }}>
-                <Form.Label>Name</Form.Label>
+                <Form.Label>
+                <Lsi import={importLsi} path={["CreateItem", "name"]} />
+                </Form.Label>
                 <Form.Control
                   type="text"
                   value={createdItem.name}
@@ -50,7 +55,9 @@ const CreateModal = createVisualComponent({
                 />
               </Form.Group>
               <Form.Group className="col" style={{ maxWidth: "30%", marginRight: "10px" }}>
-                <Form.Label>Count</Form.Label>
+                <Form.Label>
+                <Lsi import={importLsi} path={["CreateItem", "count"]} />
+                </Form.Label>
                 <Form.Control
                   type="text"
                   value={createdItem.count}
@@ -61,10 +68,10 @@ const CreateModal = createVisualComponent({
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleSave}>
-              Save
+            <Lsi import={importLsi} path={["CreateItem", "save"]} />
             </Button>
             <Button variant="secondary" onClick={handleCloseModal}>
-              Cancel
+            <Lsi import={importLsi} path={["CreateItem", "cancel"]} />
             </Button>
           </Modal.Footer>
         </Modal>
