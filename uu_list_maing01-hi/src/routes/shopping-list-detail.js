@@ -4,7 +4,7 @@ import { RouteController } from "uu_plus4u5g02-app";
 
 import Config from "./config/config.js";
 import RouteBar from "../core/route-bar";
-import ListDetail from "../bricks/shopping-list/listDetail";
+import ListDetail from "../bricks/shopping-list/list-detail.js";
 import ListDetailProvider from "../bricks/shopping-list/providers/listDetail-provider.js";
 import ItemProvider from "../bricks/shopping-list/providers/item-provider.js"
 import DataObjectStateResolver from "../core/data-object-state-resolver.js";
@@ -13,7 +13,7 @@ import DataObjectStateResolver from "../core/data-object-state-resolver.js";
 
 //@@viewOn:css
 const Css = {
-  container: () => Config.Css.css({ maxWidth: 1280, margin: "0px auto" }),
+  container: () => Config.Css.css({ margin: "0px auto" }),
   createView: () => Config.Css.css({ margin: "24px 0px" }),
 };
 //@@viewOff:css

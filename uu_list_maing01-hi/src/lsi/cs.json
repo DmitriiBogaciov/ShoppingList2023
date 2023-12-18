@@ -32,7 +32,9 @@
   "Menu": {
     "home": "Vítejte",
     "about": "O aplikaci",
-    "ShoppingLists": "Nákupní seznamy"
+    "ShoppingLists": "Nákupní seznamy",
+    "light": "Světlo",
+    "dark": "Tma"
   },
   "Lists": {
     "filter": "Filtr",

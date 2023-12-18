@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Form, Modal, Button } from 'react-bootstrap';
 import { createVisualComponent, Lsi } from 'uu5g05';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Config from './config/config';
+import Config from './config/config.js';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import importLsi from "../../lsi/import-lsi.js";
+import {useThemeContext} from "./theme-context.js"
+import "./styles.css"
 
 const CreateModal = createVisualComponent({
   uu5Tag: Config.TAG + 'EditModal',
@@ -16,6 +18,8 @@ const CreateModal = createVisualComponent({
     console.log(`props to create Item`, props);
     const [isCreateModalShown, setShow] = useState(false);
     const [createdItem, setCreatedItem] = useState('');
+
+    const [isDark] = useThemeContext();
 
     const handleShowModal = () => setShow(true);
     const handleCloseModal = () => setShow(false);
@@ -37,12 +41,12 @@ const CreateModal = createVisualComponent({
           style={{marginLeft: "5px"}}
         />
         <Modal show={isCreateModalShown} onHide={handleCloseModal}>
-          <Modal.Header>
+          <Modal.Header className={isDark ? "dark-theme" : undefined}>
             <Modal.Title>
               <Lsi import={importLsi} path={["CreateItem", "createItem"]} />
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className={isDark ? "dark-theme" : undefined}>
             <Form className="row">
               <Form.Group className="col" style={{ maxWidth: "70%", margin: "0 10px 0 10px" }}>
                 <Form.Label>
@@ -66,7 +70,7 @@ const CreateModal = createVisualComponent({
               </Form.Group>
             </Form>
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer className={isDark ? "dark-theme" : undefined}>
             <Button variant="primary" onClick={handleSave}>
             <Lsi import={importLsi} path={["CreateItem", "save"]} />
             </Button>

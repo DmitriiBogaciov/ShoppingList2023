@@ -6,6 +6,7 @@ import Plus4U5App from "uu_plus4u5g02-app";
 
 import Config from "./config/config.js";
 import Home from "../routes/home.js";
+import { ThemeProvider } from "../bricks/shopping-list/theme-provider.js"
 import 'bootstrap/dist/css/bootstrap.min.css';
 //@@viewOff:imports
 
@@ -62,7 +63,9 @@ const Spa = createVisualComponent({
     return (
       <Plus4U5.SpaProvider initialLanguageList={["en", "cs"]}>
         <Uu5Elements.ModalBus>
-          <Plus4U5App.Spa routeMap={ROUTE_MAP} />
+          <ThemeProvider>
+            <Plus4U5App.Spa routeMap={ROUTE_MAP} />
+          </ThemeProvider>
         </Uu5Elements.ModalBus>
       </Plus4U5.SpaProvider>
     );

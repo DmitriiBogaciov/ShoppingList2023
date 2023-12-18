@@ -4,6 +4,7 @@ import Plus4U5App from "uu_plus4u5g02-app";
 
 import Config from "./config/config.js";
 import importLsi from "../lsi/import-lsi.js";
+import { useThemeContext } from "../bricks/shopping-list/theme-context.js";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -31,8 +32,10 @@ const RouteBar = createVisualComponent({
   render(props) {
     //@@viewOn:private
     const [, setRoute] = useRoute();
+    const [isDark, setIsDark] = useThemeContext();
 
     const appActionList = [
+      { children: isDark ? <Lsi import={importLsi} path={["Menu", "light"]} /> : <Lsi import={importLsi} path={["Menu", "dark"]} />, onClick: setIsDark, collapsed: false },
       { children: <Lsi import={importLsi} path={["Menu", "home"]} />, onClick: () => setRoute("home") },
       { children: <Lsi import={importLsi} path={["Menu", "ShoppingLists"]} />, onClick: () => setRoute("shoppingLists") },
       {
@@ -47,7 +50,9 @@ const RouteBar = createVisualComponent({
     //@@viewOff:interface
 
     //@@viewOn:render
-    return <Plus4U5App.RouteBar appActionList={appActionList} {...props} />;
+    return <Plus4U5App.RouteBar appActionList={appActionList} {...props}
+      style={{ backgroundColor: isDark ? "#333" : "#fff", color: isDark ? "#fff" : "#000" }}
+    />;
     //@@viewOff:render
   },
 });

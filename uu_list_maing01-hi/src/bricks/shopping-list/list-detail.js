@@ -3,12 +3,15 @@ import { createVisualComponent, PropTypes, useSession, Lsi } from "uu5g05";
 import React, { useState, useEffect } from "react";
 import Config from "./config/config.js";
 import { Card, Button, Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
-import EditItemModal from "./editItemModal";
-import EditListModal from "./editListModal";
-import CreateItemModal from "./createItemModal.js";
+import EditItemModal from "./item-edit-modal.js";
+import EditListModal from "./list-edit-modal.js";
+import CreateItemModal from "./item-create-modal.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faUser, faCheck } from '@fortawesome/free-solid-svg-icons';
 import importLsi from "../../lsi/import-lsi.js";
+import { useThemeContext } from "./theme-context.js"
+
+import "./styles.css"
 
 //@@viewOff:imports
 
@@ -42,6 +45,8 @@ const ListDetail = createVisualComponent({
     const [items, setItems] = useState([]);
     const [sortType, setSortType] = useState("default");
     const [showOnlyUndoneItems, setShowOnlyUndoneItems] = useState(false);
+
+    const [isDark] = useThemeContext();
 
     const { identity } = useSession();
     const isOwner = identity?.uuIdentity === list.owner.id;
@@ -178,21 +183,17 @@ const ListDetail = createVisualComponent({
     }
 
     return (
-      <div className="list-page">
-        <Container style={{ maxWidth: "700px" }}>
-
-        </Container>
-
+      <div className={isDark ? "dark-theme" : undefined} style={{ height: "100vh" }}>
         <Container style={{ maxWidth: "700px", minWidth: "350px" }}>
           <div className="row main">
             <div className="col">
-              <Card className="list-detail mx-auto" >
+              <Card className={isDark ? "dark-theme" : undefined} >
                 <div className="list-name">
                   <Card.Title className="text-center">
                     <h2>{list.name}</h2>
                   </Card.Title>
                 </div>
-                <Navbar bg="white" expand="lg" style={{ marginLeft: "5px" }}>
+                <Navbar bg={isDark ? "#333" : "white"} data-bs-theme={isDark ? "dark" : "white"} expand="lg" style={{ marginLeft: "5px" }}>
                   <Navbar.Toggle aria-controls="basic-navbar-nav" />
                   <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
@@ -240,10 +241,8 @@ const ListDetail = createVisualComponent({
                 </Navbar>
                 <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ccc", marginBottom: "10px", paddingBottom: "5px" }}>
                   <div>
-                    {isOwner && (
-                      <CreateItemModal
-                        onSave={handleCreateItemSave}
-                      />
+                    {isOwner && !list.done && (
+                      <CreateItemModal onSave={handleCreateItemSave} />
                     )}
                   </div>
                   <div className="user" style={{ marginRight: "5px" }}>
@@ -258,7 +257,7 @@ const ListDetail = createVisualComponent({
                     <div className="row list-item" key={item.id}>
                       <div className="col">
                         <div className="form-check" style={{ paddingLeft: "30px" }}>
-                          {list.done === false && (
+                          {!list.done && (
                             <input
                               className="form-check-input"
                               type="checkbox"

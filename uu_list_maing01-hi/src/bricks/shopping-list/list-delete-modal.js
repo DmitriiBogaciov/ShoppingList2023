@@ -6,6 +6,9 @@ import Config from "./config/config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import importLsi from "../../lsi/import-lsi.js";
+import { useThemeContext } from "./theme-context.js"
+
+import "./styles.css"
 
 const ListDelete = createVisualComponent({
   //@@viewOn:statics
@@ -22,6 +25,8 @@ const ListDelete = createVisualComponent({
   render(props) {
     const [isDeleteModalShown, setShow] = useState(false);
 
+    const [isDark] = useThemeContext();
+
     const handleShowModal = () => setShow(true);
     const handleCloseModal = () => setShow(false);
 
@@ -34,15 +39,15 @@ const ListDelete = createVisualComponent({
     return (
       <div>
         <Modal show={isDeleteModalShown} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton className={isDark ? "dark-theme" : undefined}>
             <Modal.Title>
               <Lsi import={importLsi} path={["DeleteList", "deleteList"]} />
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className={isDark ? "dark-theme" : undefined}>
           <Lsi import={importLsi} path={["DeleteList", "messageDelete"]} />{props.name}"?
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer className={isDark ? "dark-theme" : undefined}>
             <Button variant="secondary" onClick={handleCloseModal}>
             <Lsi import={importLsi} path={["DeleteList", "cancel"]} />
             </Button>

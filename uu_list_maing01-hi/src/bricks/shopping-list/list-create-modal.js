@@ -3,11 +3,10 @@ import { Form, Modal, Button, Navbar, Container, Nav, Card } from 'react-bootstr
 import React, { useState, useEffect, useMemo } from 'react'
 import { createVisualComponent, Lsi } from "uu5g05";
 import Config from "./config/config";
-import Uu5Elements from "uu5g05-elements";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { mdiPlus } from "@mdi/js";
 import importLsi from "../../lsi/import-lsi.js";
+import {useThemeContext} from "./theme-context.js"
+import "./styles.css"
 
 const ListCreate = createVisualComponent({
   //@@viewOn:statics
@@ -24,6 +23,8 @@ const ListCreate = createVisualComponent({
   render(props) {
     const [isModalShown, setShow] = useState(false);
     const [listName, setListName] = useState('');
+
+    const [isDark] = useThemeContext();
 
     const handleShowModal = () => setShow(true);
     const handleCloseModal = () => setShow(false);
@@ -49,7 +50,7 @@ const ListCreate = createVisualComponent({
     return (
       <div>
         <Modal show={isModalShown} onHide={handleCloseModal}>
-          <Form className="mx-auto" onSubmit={handleCreateList}>
+        <Form className={isDark ? "dark-theme" : undefined} onSubmit={handleCreateList}>
             <Modal.Header closeButton>
               <Modal.Title>
                 <Lsi import={importLsi} path={["CreateList", "createList"]} />
@@ -73,7 +74,7 @@ const ListCreate = createVisualComponent({
           </Form>
         </Modal>
         <Icon path={mdiPlus}
-          style={{ color: "whitesmoke", cursor: "pointer", alignSelf: 'center', marginLeft: '15px' }}
+          style={{ color: "whitesmoke", cursor: "pointer", alignSelf: 'center', marginLeft: "15px"}}
           size={1.3}
           onClick={handleShowModal}
         />

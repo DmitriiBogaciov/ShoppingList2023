@@ -2,10 +2,12 @@ import { Form, Modal, Button } from 'react-bootstrap';
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createVisualComponent, Lsi } from 'uu5g05';
-import Config from './config/config';
+import Config from './config/config.js';
 import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Nav } from 'react-bootstrap';
 import importLsi from "../../lsi/import-lsi.js";
+import {useThemeContext} from "./theme-context.js"
+import "./styles.css"
 
 
 const EditModal = createVisualComponent({
@@ -18,6 +20,8 @@ const EditModal = createVisualComponent({
     const [isEditModalShown, setShow] = useState(false);
     const [editedList, setEditedList] = useState({ ...props.list });
     const [newMember, setNewMember] = useState('');
+
+    const [isDark] = useThemeContext();
 
     const handleShowModal = () => setShow(true);
     const handleCloseModal = () => setShow(false);
@@ -63,13 +67,13 @@ const EditModal = createVisualComponent({
         </Nav.Link>
 
         <Modal show={isEditModalShown} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton className={isDark ? "dark-theme" : undefined}>
             <Modal.Title><Lsi import={importLsi} path={["ListEdit", "edit"]} /></Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <Form.Text>
+          <Modal.Body className={isDark ? "dark-theme" : undefined}>
+            <Form.Label>
               <Lsi import={importLsi} path={["ListEdit", "name"]} />
-            </Form.Text>
+            </Form.Label>
             <Form.Control
               style={{ width: "100%" }}
               type="text"
@@ -77,9 +81,9 @@ const EditModal = createVisualComponent({
               onChange={(e) => handleEditList('name', e.target.value)}
             />
             <Form.Group controlId="newMemberInput" style={{ marginBottom: "15px" }}>
-              <Form.Text>
+              <Form.Label>
               <Lsi import={importLsi} path={["ListEdit", "members"]} />
-              </Form.Text>
+              </Form.Label>
               <div className="row">
                 <div className="col">
                   <Form.Control
@@ -118,7 +122,7 @@ const EditModal = createVisualComponent({
               </div>
             ))}
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer className={isDark ? "dark-theme" : undefined}>
             <Button variant="secondary" onClick={handleCloseModal}>
             <Lsi import={importLsi} path={["ListEdit", "cancel"]} />
             </Button>

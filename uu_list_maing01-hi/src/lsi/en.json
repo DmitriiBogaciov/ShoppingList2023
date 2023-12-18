@@ -32,7 +32,9 @@
   "Menu": {
     "home": "Welcome",
     "about": "About Application",
-    "ShoppingLists": "ShoppingLists"
+    "ShoppingLists": "ShoppingLists",
+    "light": "Light",
+    "dark": "Dark"
   },
   "Lists": {
     "filter": "Filter",

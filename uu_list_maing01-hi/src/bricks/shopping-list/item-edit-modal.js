@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Form, Modal, Button } from 'react-bootstrap';
 import { createVisualComponent, Lsi } from 'uu5g05';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Config from './config/config';
+import Config from './config/config.js';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import importLsi from "../../lsi/import-lsi.js";
+import {useThemeContext} from "./theme-context.js"
+import "./styles.css"
 
 const EditModal = createVisualComponent({
   uu5Tag: Config.TAG + 'EditModal',
@@ -16,6 +18,8 @@ const EditModal = createVisualComponent({
     console.log(`props to edit Item`, props);
     const [isEditModalShown, setShow] = useState(false);
     const [editedItem, setEditedItem] = useState({ ...props.item });
+
+    const [isDark] = useThemeContext();
 
     const handleShowModal = () => setShow(true);
     const handleCloseModal = () => setShow(false);
@@ -36,12 +40,12 @@ const EditModal = createVisualComponent({
           size='sm'
         />
         <Modal show={isEditModalShown} onHide={handleCloseModal}>
-          <Modal.Header>
+          <Modal.Header className={isDark ? "dark-theme" : undefined}>
             <Modal.Title>
             <Lsi import={importLsi} path={["EditItem", "editItem"]} />
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className={isDark ? "dark-theme" : undefined}>
             <Form className="row">
               <Form.Group className="col" style={{ maxWidth: "70%", margin: "0 10px 0 10px" }}>
                 <Form.Label>
@@ -65,7 +69,7 @@ const EditModal = createVisualComponent({
               </Form.Group>
             </Form>
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer className={isDark ? "dark-theme" : undefined}>
             <Button variant="primary" onClick={handleSave}>
             <Lsi import={importLsi} path={["EditItem", "save"]} />
             </Button>
