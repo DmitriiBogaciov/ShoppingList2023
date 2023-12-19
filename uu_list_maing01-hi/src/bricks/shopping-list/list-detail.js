@@ -2,7 +2,8 @@
 import { createVisualComponent, PropTypes, useSession, Lsi } from "uu5g05";
 import React, { useState, useEffect } from "react";
 import Config from "./config/config.js";
-import { Card, Button, Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { Card, Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { PieChart, Pie, Sector, Cell, Label } from "recharts";
 import EditItemModal from "./item-edit-modal.js";
 import EditListModal from "./list-edit-modal.js";
 import CreateItemModal from "./item-create-modal.js";
@@ -50,6 +51,15 @@ const ListDetail = createVisualComponent({
 
     const { identity } = useSession();
     const isOwner = identity?.uuIdentity === list.owner.id;
+
+    const completedItemsCount = items.filter(item => item.done).length;
+    const incompleteItemsCount = items.length - completedItemsCount;
+
+    const dataChart = [
+      { name: "Completed", value: completedItemsCount },
+      { name: "Incomplited", value: incompleteItemsCount }
+    ];
+    const COLORS = ["#0088FE", "#00C49F"];
 
     useEffect(() => {
       const loadItems = async () => {
@@ -193,7 +203,7 @@ const ListDetail = createVisualComponent({
                     <h2>{list.name}</h2>
                   </Card.Title>
                 </div>
-                <Navbar bg={isDark ? "#333" : "white"} data-bs-theme={isDark ? "dark" : "white"} expand="lg" style={{ marginLeft: "5px" }}>
+                <Navbar bg={isDark ? "#333" : "white"} data-bs-theme={isDark ? "dark" : "white"} expand="lg" style={{ marginLeft: "10px" }}>
                   <Navbar.Toggle aria-controls="basic-navbar-nav" />
                   <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
@@ -257,14 +267,13 @@ const ListDetail = createVisualComponent({
                     <div className="row list-item" key={item.id}>
                       <div className="col">
                         <div className="form-check" style={{ paddingLeft: "30px" }}>
-                          {!list.done && (
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              checked={item.done}
-                              onChange={() => toggleEdit(item.id)}
-                            />
-                          )}
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            checked={item.done}
+                            onChange={() => toggleEdit(item.id)}
+                            disabled={list.done} 
+                          />
                           <label className="form-check-label" htmlFor={`checkbox-${item.id}`}>
                             {item.name}
                           </label>
@@ -289,6 +298,26 @@ const ListDetail = createVisualComponent({
                     </div>
                   ))}
                 </div>
+                <PieChart width={180} height={150} style={{ margin: "auto" }}>
+                  <Pie
+                    data={dataChart}
+                    cx={85}
+                    cy={75}
+                    innerRadius={40}
+                    outerRadius={60}
+                    fill="#8884d8"
+                    paddingAngle={0}
+                    dataKey="value"
+                  >
+                    {dataChart.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                    <Label
+                      value={`${((dataChart[0].value / (dataChart[0].value + dataChart[1].value)) * 100).toFixed(0)}%`}
+                      position="center"
+                    />
+                  </Pie>
+                </PieChart>
               </Card>
             </div>
           </div>

@@ -40,7 +40,8 @@
     "filter": "Filtr",
     "filterAll": "Vše",
     "filterReady": "Hotovo",
-    "filterNotReady": "Není hotovo"
+    "filterNotReady": "Není hotovo",
+    "listsNumber": "Počet seznamů"
   },
   "CreateList": {
     "createList": "Vytvořit seznam",

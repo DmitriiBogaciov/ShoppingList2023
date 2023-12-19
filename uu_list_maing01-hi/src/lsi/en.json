@@ -40,7 +40,8 @@
     "filter": "Filter",
     "filterAll": "All",
     "filterReady": "Ready",
-    "filterNotReady": "Not ready"
+    "filterNotReady": "Not ready",
+    "listsNumber": "Number of lists"
   },
   "CreateList": {
     "createList": "Create list",

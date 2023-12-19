@@ -6,6 +6,8 @@ import Config from "./config/config.js";
 import { ButtonGroup, Dropdown, Navbar, Container } from "react-bootstrap";
 import BackgroundImage from "./Images/backgroundImage1.jpg"
 import Card from "react-bootstrap/Card";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faCheckDouble } from '@fortawesome/free-solid-svg-icons';
 
 import ListCreate from "./list-create-modal";
 import ListDelete from "./list-delete-modal";
@@ -111,7 +113,7 @@ const ShoppingLists = createVisualComponent({
       <div className={isDark ? "dark-theme" : undefined} style={{ height: "100vh" }}>
         <Container style={{ maxWidth: "1280px" }}>
           <Navbar style={{
-            backgroundColor: isDark ? "#333" : "#6495ED",
+            backgroundColor: isDark ? "#282828" : "#6495ED",
             color: isDark ? "#fff" : "#000",
             marginBottom: "10px"
           }}>
@@ -142,6 +144,9 @@ const ShoppingLists = createVisualComponent({
               </Dropdown.Menu>
             </Dropdown>
           </Navbar>
+          <div style={{ marginBottom: "10px", color: isDark ? "#fff" : "#000" }}>
+          <h7><Lsi import={importLsi} path={["Lists", "listsNumber"]} />: {filteredShoppingLists.length}</h7>
+          </div>
           <div className="row">
             {filteredShoppingLists.map((list) => {
               const isOwner = identity?.uuIdentity === list.data.owner.id;
@@ -156,12 +161,17 @@ const ShoppingLists = createVisualComponent({
                       <div className="row" style={{ maxHeight: "40px", minHeight: "40px" }}>
                         <div className="col d-flex align-items-center" style={{ color: "white", marginLeft: "10px" }}>{list.data.owner.name}</div>
                         <div className="col d-flex justify-content-end align-items-center" style={{ marginRight: "10px", maxWidth: "40px" }}>
-                          {isOwner &&
-                            <ListDelete
-                              name={list.data.name}
-                              listId={list.data.id}
-                              onDeleteList={handleDeleteList}
-                            />}</div>
+                          {list.data.done && <FontAwesomeIcon icon={faCheckDouble} style={{ color: 'green', marginRight: "10px"}} />}
+                          {isOwner && (
+                            <>
+                              <ListDelete
+                                name={list.data.name}
+                                listId={list.data.id}
+                                onDeleteList={handleDeleteList}
+                              />
+                            </>
+                          )}
+                        </div>
                       </div>
                     </Card.Text>
                   </Card>

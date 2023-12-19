@@ -15,6 +15,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-router-dom": "^6.18.0",
+    "recharts": "^2.10.3",
     "uu_plus4u5g02": "^1.22.2",
     "uu_plus4u5g02-app": "^1.22.2",
     "uu_plus4u5g02-elements": "^1.22.2",

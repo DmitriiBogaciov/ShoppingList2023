@@ -74,7 +74,7 @@ const ListCreate = createVisualComponent({
           </Form>
         </Modal>
         <Icon path={mdiPlus}
-          style={{ color: "whitesmoke", cursor: "pointer", alignSelf: 'center', marginLeft: "15px"}}
+          style={{ color: "whitesmoke", cursor: "pointer", alignSelf: 'center', marginLeft: "5px"}}
           size={1.3}
           onClick={handleShowModal}
         />
